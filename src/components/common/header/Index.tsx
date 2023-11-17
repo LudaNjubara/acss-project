@@ -8,7 +8,7 @@ export default function Header() {
   const location = useLocation();
 
   return (
-    <header className="fixed top-10 left-[50%] translate-x-[-50%] w-full max-w-2xl border-1 border-neutral-500 bg-neutral-700/20 p-6 rounded-full shadow-lg">
+    <header className="fixed top-10 left-[50%] translate-x-[-50%] w-full max-w-2xl border-1 border-neutral-500 bg-neutral-700/20 p-6 rounded-full shadow-lg backdrop-blur-md">
       <nav className="w-full">
         <ul className="flex justify-center items-center space-x-6">
           <li>

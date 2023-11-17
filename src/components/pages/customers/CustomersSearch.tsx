@@ -18,9 +18,11 @@ function CustomersSearch({ setCustomersData, setResponseError }: TCustomersSearc
     if (!searchQuery) return;
 
     try {
-      const res = await fetch(`${BASE_API_URL}/Customer`, {
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ searchQuery }),
+      const res = await fetch(`${BASE_API_URL}/Customer?q=${searchQuery}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
       });
 
       if (!res.ok) {
@@ -28,7 +30,7 @@ function CustomersSearch({ setCustomersData, setResponseError }: TCustomersSearc
         setResponseError(message || "Something went wrong");
       }
 
-      const { data } = await res.json();
+      const data = await res.json();
       setCustomersData(data);
     } catch (error) {
       if (error instanceof Error) {
