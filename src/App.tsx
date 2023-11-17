@@ -1,11 +1,32 @@
-import React from 'react';
-import './App.css';
+import { Route, RouterProvider, createBrowserRouter, createRoutesFromElements } from "react-router-dom";
+import "./App.css";
+import RootLayout from "./RootLayout";
+import PrivateRoutes from "./components/common/router/PrivateRoutes";
+import CustomersView from "./components/views/customers/Index";
+import HomeView from "./components/views/home/Index";
+import LoginView from "./components/views/login/Index";
+import RegisterView from "./components/views/register/Index";
+
+const router = createBrowserRouter(
+  createRoutesFromElements(
+    <Route path="/" element={<RootLayout />}>
+      <Route index element={<HomeView />} />
+      <Route path="login" element={<LoginView />} />
+      <Route path="register" element={<RegisterView />} />
+
+      {/* Private routes */}
+      <Route element={<PrivateRoutes />}>
+        <Route path="customers" element={<CustomersView />} />
+      </Route>
+    </Route>
+  )
+);
 
 function App() {
   return (
-    <h1 className="text-3xl font-bold underline text-red-600">
-      Simple React Typescript Tailwind Sample
-    </h1>
+    <div>
+      <RouterProvider router={router} />
+    </div>
   );
 }
 
