@@ -1,18 +1,22 @@
 import { useState } from "react";
 
 import { useCustomers } from "../../../hooks/CustomersHooks";
+import useGlobalStore from "../../../lib/store/GlobalStore";
 import { TUseCustomersOptions } from "../../../typings";
 import CustomersPagination from "./CustomersPagination";
 import CustomersSearch from "./CustomersSearch";
 import CustomersTable from "./CustomersTable";
 
 export default function Customers() {
+  // zustand state and actions
+  const numOfCustomersToShow = useGlobalStore((state) => state.numOfCustomersToShow);
+
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
 
   const customersOptions: TUseCustomersOptions = {
     page: currentPage,
-    limit: 10,
+    limit: numOfCustomersToShow,
     searchQuery,
   };
 

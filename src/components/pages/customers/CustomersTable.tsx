@@ -1,11 +1,18 @@
 import { Edit, Trash } from "lucide-react";
+import useGlobalStore from "../../../lib/store/GlobalStore";
 import { TCustomer } from "../../../typings";
+
+const numOfCustomersToShowDropdownOptions = [10, 25, 50, 100];
 
 type TCustomersTableProps = {
   data?: TCustomer[];
 };
 
 export default function CustomersTable({ data }: TCustomersTableProps) {
+  // zustand state and actions
+  const numOfCustomersToShow = useGlobalStore((state) => state.numOfCustomersToShow);
+  const setNumOfCustomersToShow = useGlobalStore((state) => state.setNumOfCustomersToShow);
+
   const handleEdit = (customer: TCustomer) => {
     console.log("Edit", customer);
   };
@@ -20,6 +27,26 @@ export default function CustomersTable({ data }: TCustomersTableProps) {
         <p className="text-lg text-neutral-500">
           Showing <span className="px-1 font-semibold">{data?.length || 0}</span> customer(s)
         </p>
+
+        <div className="flex items-center gap-2">
+          <label htmlFor="numOfCustomersToShow" className="text-lg text-neutral-500">
+            Show
+          </label>
+          <select
+            name="numOfCustomersToShow"
+            id="numOfCustomersToShow"
+            defaultValue={numOfCustomersToShow}
+            onChange={(e) => setNumOfCustomersToShow(Number(e.target.value))}
+            className="px-2 py-1 rounded-md bg-neutral-800 border-2 border-neutral-400/30 text-lg text-neutral-500"
+          >
+            {numOfCustomersToShowDropdownOptions.map((option) => (
+              <option key={option} value={option}>
+                {option}
+              </option>
+            ))}
+          </select>
+          <span className="text-lg text-neutral-500">customers per page</span>
+        </div>
       </div>
 
       <div className="overflow-hidden rounded-lg border-2 border-neutral-900">
