@@ -10,5 +10,11 @@ type TCustomer = {
     cityId: number | null
 }
 
-export { TCustomer }
+type TUseCustomersOptions = {
+    page?: number;
+    limit?: number;
+    searchQuery?: string;
+};
+
+export { TCustomer, TUseCustomersOptions }
 

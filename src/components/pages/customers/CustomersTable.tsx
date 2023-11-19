@@ -2,7 +2,7 @@ import { Edit, Trash } from "lucide-react";
 import { TCustomer } from "../../../typings";
 
 type TCustomersTableProps = {
-  data: TCustomer[];
+  data?: TCustomer[];
 };
 
 export default function CustomersTable({ data }: TCustomersTableProps) {
@@ -18,7 +18,7 @@ export default function CustomersTable({ data }: TCustomersTableProps) {
     <div className="flex flex-col gap-5">
       <div className="flex items-center justify-between">
         <p className="text-lg text-neutral-500">
-          Showing <span className="px-1 font-semibold">{data.length}</span> customer(s)
+          Showing <span className="px-1 font-semibold">{data?.length || 0}</span> customer(s)
         </p>
       </div>
 
@@ -34,7 +34,7 @@ export default function CustomersTable({ data }: TCustomersTableProps) {
             </tr>
           </thead>
           <tbody className="divide-y divide-neutral-900">
-            {data.map((customer, idx) => (
+            {data?.map((customer, idx) => (
               <tr key={customer.id} className={`${idx % 2 === 0 ? "bg-neutral-800" : "bg-neutral-800/60"}`}>
                 <td className="px-5 py-4">{customer.name}</td>
                 <td className="px-5 py-4">{customer.surname}</td>
@@ -64,7 +64,7 @@ export default function CustomersTable({ data }: TCustomersTableProps) {
           </tbody>
         </table>
 
-        {data.length === 0 && (
+        {data?.length === 0 && (
           <div className="flex flex-col items-center justify-center p-10">
             <h2 className="text-2xl font-semibold">No customers found</h2>
             <p className="text-lg text-neutral-500">Try searching for another customer</p>
