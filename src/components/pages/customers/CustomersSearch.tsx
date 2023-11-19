@@ -17,11 +17,11 @@ function CustomersSearch({ setSearchQuery }: TCustomersSearchProps) {
 
   const handleClearSearch = () => {
     const searchInput = document.querySelector<HTMLInputElement>("input[name=searchQuery]");
-    if (searchInput) {
+    if (searchInput && searchInput.value) {
+      console.log("clearing search");
       searchInput.value = "";
+      setSearchQuery("");
     }
-
-    setSearchQuery("");
   };
 
   return (

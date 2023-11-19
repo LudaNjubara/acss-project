@@ -16,5 +16,12 @@ type TUseCustomersOptions = {
     searchQuery?: string;
 };
 
-export { TCustomer, TUseCustomersOptions }
+type TAction = "edit" | "delete" | null;
+
+type TCurrentActionState = {
+    action: TAction;
+    customer: TCustomer | null;
+};
+
+export { TAction, TCurrentActionState, TCustomer, TUseCustomersOptions }
 
