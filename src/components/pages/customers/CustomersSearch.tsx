@@ -20,8 +20,9 @@ function CustomersSearch({ setSearchQuery }: TCustomersSearchProps) {
     if (searchInput && searchInput.value) {
       console.log("clearing search");
       searchInput.value = "";
-      setSearchQuery("");
     }
+
+    setSearchQuery("");
   };
 
   return (
