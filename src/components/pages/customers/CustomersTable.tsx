@@ -1,6 +1,7 @@
 import { Edit, Trash } from "lucide-react";
 import { useState } from "react";
 import useModal from "../../../hooks/useModal";
+import { BASE_API_URL } from "../../../lib/constants/Index";
 import useGlobalStore from "../../../lib/store/GlobalStore";
 import { TAction, TCurrentActionState, TCustomer } from "../../../typings";
 
@@ -27,15 +28,73 @@ export default function CustomersTable({ data }: TCustomersTableProps) {
     openModal();
   };
 
-  const handleEdit = (customer: TCustomer) => {
-    console.log("Edit", customer);
-  };
-
-  const handleDelete = (customer: TCustomer) => {
+  const handleEdit = async (customer: TCustomer) => {
     try {
+      const res = await fetch(`${BASE_API_URL}/Customer/${customer.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify(customer),
+      });
+
+      if (!res.ok) throw new Error("Something went wrong");
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const handleDelete = async (customer: TCustomer) => {
+    try {
+      const res = await fetch(`${BASE_API_URL}/Customer/${customer.id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+
+      if (!res.ok) throw new Error("Something went wrong");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleConfirmModal = (e?: React.FormEvent<HTMLFormElement>) => {
+    if (currentActionState.customer === null) return;
+
+    switch (currentActionState.action) {
+      case "edit":
+        if (!e) return;
+        e.preventDefault();
+
+        const formData = new FormData(e.currentTarget);
+
+        const name = formData.get("name") as string;
+        const surname = formData.get("surname") as string;
+        const email = formData.get("email") as string;
+        const telephone = formData.get("telephone") as string;
+
+        const newCustomer = {
+          ...currentActionState.customer,
+          name,
+          surname,
+          email,
+          telephone,
+        };
+        handleEdit(newCustomer);
+        break;
+
+      case "delete":
+        handleDelete(currentActionState.customer);
+        break;
+
+      default:
+        break;
+    }
+
+    confirmModal();
   };
 
   return (
@@ -124,6 +183,7 @@ export default function CustomersTable({ data }: TCustomersTableProps) {
       {isOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-neutral-900/80">
           <div className="w-full max-w-md bg-neutral-800 rounded-lg p-8">
+            {/* Edit modal */}
             {currentActionState.action === "edit" && (
               <>
                 <h2 className="text-2xl mb-2 font-semibold">Edit customer</h2>
@@ -134,8 +194,7 @@ export default function CustomersTable({ data }: TCustomersTableProps) {
                   </span>
                 </p>
 
-                {/* input fields where user can edit the current customer */}
-                <div className="flex flex-col gap-3 mt-5">
+                <form onSubmit={handleConfirmModal} className="flex flex-col gap-3 mt-5">
                   <label htmlFor="name" className="text-lg text-neutral-500">
                     Name
                   </label>
@@ -179,27 +238,27 @@ export default function CustomersTable({ data }: TCustomersTableProps) {
                     defaultValue={currentActionState.customer?.telephone}
                     className="px-2 py-1 rounded-md bg-neutral-800 border-2 border-neutral-400/30 text-lg text-neutral-500"
                   />
-                </div>
 
-                <div className="flex items-center justify-end gap-3 mt-5">
-                  <button
-                    type="button"
-                    onClick={() => cancelModal()}
-                    className="px-4 py-2 rounded-md bg-neutral-800 text-neutral-300 hover:bg-neutral-700"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => confirmModal()}
-                    className="px-4 py-2 rounded-md bg-green-600 text-neutral-50 hover:bg-green-500"
-                  >
-                    Save
-                  </button>
-                </div>
+                  <div className="flex items-center justify-end gap-3 mt-5">
+                    <button
+                      type="button"
+                      onClick={() => cancelModal()}
+                      className="px-4 py-2 rounded-md bg-neutral-800 text-neutral-300 hover:bg-neutral-700"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="submit"
+                      className="px-4 py-2 rounded-md bg-green-600 text-neutral-50 hover:bg-green-500"
+                    >
+                      Save
+                    </button>
+                  </div>
+                </form>
               </>
             )}
 
+            {/* Delete modal */}
             {currentActionState.action === "delete" && (
               <>
                 <h2 className="text-2xl mb-2 font-semibold">Delete customer</h2>
@@ -211,7 +270,7 @@ export default function CustomersTable({ data }: TCustomersTableProps) {
                   ?
                 </p>
 
-                <div className="flex items-center justify-end gap-3 mt-5">
+                <form onSubmit={handleConfirmModal} className="flex items-center justify-end gap-3 mt-5">
                   <button
                     type="button"
                     onClick={() => cancelModal()}
@@ -220,13 +279,12 @@ export default function CustomersTable({ data }: TCustomersTableProps) {
                     Cancel
                   </button>
                   <button
-                    type="button"
-                    onClick={() => confirmModal()}
+                    type="submit"
                     className="px-4 py-2 rounded-md bg-red-600 text-neutral-50 hover:bg-red-500"
                   >
                     Delete
                   </button>
-                </div>
+                </form>
               </>
             )}
           </div>
