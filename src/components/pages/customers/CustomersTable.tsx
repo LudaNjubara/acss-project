@@ -4,6 +4,7 @@ import useModal from "../../../hooks/useModal";
 import { BASE_API_URL } from "../../../lib/constants/Index";
 import useGlobalStore from "../../../lib/store/GlobalStore";
 import { TAction, TCurrentActionState, TCustomer } from "../../../typings";
+import { toastObserver } from "../../common/toast/Index";
 
 const numOfCustomersToShowDropdownOptions = [10, 25, 50, 100];
 
@@ -40,8 +41,20 @@ export default function CustomersTable({ data }: TCustomersTableProps) {
       });
 
       if (!res.ok) throw new Error("Something went wrong");
+
+      toastObserver.notify({
+        message: `Customer ${customer.name} ${customer.surname} updated`,
+        type: "success",
+        show: true,
+      });
     } catch (error) {
       console.log(error);
+
+      toastObserver.notify({
+        message: `Error while updating customer ${customer.name} ${customer.surname}`,
+        type: "error",
+        show: true,
+      });
     }
   };
 
@@ -56,8 +69,20 @@ export default function CustomersTable({ data }: TCustomersTableProps) {
       });
 
       if (!res.ok) throw new Error("Something went wrong");
+
+      toastObserver.notify({
+        message: `Customer ${customer.name} ${customer.surname} deleted`,
+        type: "success",
+        show: true,
+      });
     } catch (error) {
       console.log(error);
+
+      toastObserver.notify({
+        message: `Error while deleting customer ${customer.name} ${customer.surname}`,
+        type: "error",
+        show: true,
+      });
     }
   };
 

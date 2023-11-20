@@ -1,4 +1,8 @@
-
+type TToastData = {
+    message: string;
+    type: "success" | "error" | "";
+    show: boolean;
+}
 
 type TCustomer = {
     id: number
@@ -23,5 +27,5 @@ type TCurrentActionState = {
     customer: TCustomer | null;
 };
 
-export { TAction, TCurrentActionState, TCustomer, TUseCustomersOptions }
+export { TAction, TCurrentActionState, TCustomer, TToastData, TUseCustomersOptions };
 

@@ -2,6 +2,7 @@ import { Route, RouterProvider, createBrowserRouter, createRoutesFromElements } 
 import "./App.css";
 import RootLayout from "./RootLayout";
 import PrivateRoutes from "./components/common/router/PrivateRoutes";
+import Toaster from "./components/common/toast/Index";
 import CustomersView from "./components/views/customers/Index";
 import HomeView from "./components/views/home/Index";
 import LoginView from "./components/views/login/Index";
@@ -26,6 +27,7 @@ function App() {
   return (
     <div>
       <RouterProvider router={router} />
+      <Toaster />
     </div>
   );
 }
