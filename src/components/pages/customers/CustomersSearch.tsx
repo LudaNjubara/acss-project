@@ -18,7 +18,6 @@ function CustomersSearch({ setSearchQuery }: TCustomersSearchProps) {
   const handleClearSearch = () => {
     const searchInput = document.querySelector<HTMLInputElement>("input[name=searchQuery]");
     if (searchInput && searchInput.value) {
-      console.log("clearing search");
       searchInput.value = "";
     }
 

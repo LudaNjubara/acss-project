@@ -1,8 +1,10 @@
 import React, { useState } from "react";
-import { redirect } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { BASE_API_URL } from "../../../lib/constants/Index";
 
 export default function RegisterForm() {
+  const navigation = useNavigate();
+
   const [userData, setUserData] = useState({
     name: "",
     email: "",
@@ -59,7 +61,7 @@ export default function RegisterForm() {
         setResponseError(message || "Something went wrong");
       }
 
-      redirect("/login");
+      navigation("/login");
     } catch (error) {
       if (error instanceof Error) {
         setResponseError(error.message);

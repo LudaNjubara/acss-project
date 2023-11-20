@@ -8,7 +8,7 @@ export type TGlobalStoreType = {
 }
 
 const useGlobalStore = create<TGlobalStoreType>((set) => ({
-    isLoggedIn: false,
+    isLoggedIn: !!localStorage.getItem('token'),
     setIsLoggedIn: (isLoggedIn: boolean) => set({ isLoggedIn }),
 
     numOfCustomersToShow: 10,

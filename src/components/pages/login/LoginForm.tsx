@@ -1,11 +1,13 @@
 import { useState } from "react";
-import { redirect } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { BASE_API_URL } from "../../../lib/constants/Index";
 import useGlobalStore from "../../../lib/store/GlobalStore";
 
 export default function LoginForm() {
   // zustand state and actions
   const setIsLoggedIn = useGlobalStore((state) => state.setIsLoggedIn);
+
+  const navigation = useNavigate();
 
   const [userData, setUserData] = useState({
     email: "",
@@ -59,7 +61,7 @@ export default function LoginForm() {
       localStorage.setItem("token", access_token);
       setIsLoggedIn(true);
 
-      redirect("/");
+      navigation("/");
     } catch (error) {
       if (error instanceof Error) {
         setResponseError(error.message);
