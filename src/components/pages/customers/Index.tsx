@@ -20,12 +20,12 @@ export default function Customers() {
     searchQuery,
   };
 
-  const { data: customersData, error } = useCustomers(customersOptions);
+  const { data, error } = useCustomers(customersOptions);
 
   return (
     <div className="flex flex-col gap-10 px-3">
       <CustomersSearch setSearchQuery={setSearchQuery} />
-      <CustomersTable data={customersData} />
+      <CustomersTable data={data} />
       {!searchQuery && <CustomersPagination currentPage={currentPage} setCurrentPage={setCurrentPage} />}
 
       {error && (

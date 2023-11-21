@@ -1,3 +1,6 @@
 const BASE_API_URL = process.env.BASE_API_URL || 'http://localhost:3001';
 
-export { BASE_API_URL };
+const NUM_OF_CUSTOMERS_TO_SHOW_DROPDOWN_OPTIONS = [10, 25, 50, 100]
+
+export { BASE_API_URL, NUM_OF_CUSTOMERS_TO_SHOW_DROPDOWN_OPTIONS };
+
