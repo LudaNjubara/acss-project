@@ -2,12 +2,12 @@ import { useState } from "react";
 import useModal from "../../../hooks/useModal";
 import { BASE_API_URL, NUM_OF_CUSTOMERS_TO_SHOW_DROPDOWN_OPTIONS } from "../../../lib/constants/Index";
 import useGlobalStore from "../../../lib/store/GlobalStore";
-import { TAction, TCurrentActionState, TCustomer } from "../../../typings";
+import { TAction, TCurrentActionState, TCustomer, TCustomerColumn, TCustomerKey } from "../../../typings";
 import { Modal } from "../../common/modal/Index";
 import { Table } from "../../common/table/Index";
 import { toastObserver } from "../../common/toast/Index";
 
-const customerColumns = [
+const customerColumns: TCustomerColumn[] = [
   { field: "name", headerName: "Name", sortable: true },
   { field: "surname", headerName: "Surname", sortable: true },
   { field: "email", headerName: "Email", sortable: true },
@@ -139,13 +139,26 @@ export default function CustomersTable({ data }: TCustomersTableProps) {
   // zustand state and actions
   const numOfCustomersToShow = useGlobalStore((state) => state.numOfCustomersToShow);
   const setNumOfCustomersToShow = useGlobalStore((state) => state.setNumOfCustomersToShow);
+  const sort = useGlobalStore((state) => state.sort);
+  const setSort = useGlobalStore((state) => state.setSort);
+  const order = useGlobalStore((state) => state.order);
+  const setOrder = useGlobalStore((state) => state.setOrder);
 
   const [currentActionState, setCurrentActionState] = useState<TCurrentActionState>({
     action: null,
     customer: null,
   });
 
-  const handleSort = (field: string) => {};
+  const handleSort = (field: TCustomerKey) => {
+    // sort is an array of strings
+    const isAlreadySorted = sort.includes(field);
+
+    // if it's already sorted, we reverse the order
+    const newOrder = isAlreadySorted && order === "asc" ? "desc" : "asc";
+
+    setSort([...sort, field]);
+    setOrder(newOrder);
+  };
 
   const { isOpen, openModal, closeModal, isOk, confirmModal, isCancel, cancelModal } = useModal();
 

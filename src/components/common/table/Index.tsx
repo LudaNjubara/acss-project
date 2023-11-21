@@ -1,10 +1,10 @@
 import { Edit, Trash } from "lucide-react";
-import { TAction, TCustomer } from "../../../typings";
+import { TAction, TCustomer, TCustomerColumn, TCustomerKey } from "../../../typings";
 
 type TableProps = {
   data?: any[];
-  columns: { field: string; headerName: string; sortable?: boolean }[];
-  onSort?: (field: string) => void;
+  columns: TCustomerColumn[];
+  onSort?: (field: TCustomerKey) => void;
   handleOpenModal: (customer: TCustomer, action: TAction) => void;
 };
 
@@ -31,7 +31,7 @@ export const Table = ({ data, columns, onSort, handleOpenModal }: TableProps) =>
             <tr key={customer.id} className={`${idx % 2 === 0 ? "bg-neutral-800" : "bg-neutral-800/60"}`}>
               {columns.map((column) =>
                 column.field === "actions" ? (
-                  <td className="px-5 py-4">
+                  <td className="px-5 py-4" key={column.field}>
                     <div className="flex items-center gap-3">
                       <button
                         type="button"

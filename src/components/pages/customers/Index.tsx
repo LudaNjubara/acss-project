@@ -10,6 +10,8 @@ import CustomersTable from "./CustomersTable";
 export default function Customers() {
   // zustand state and actions
   const numOfCustomersToShow = useGlobalStore((state) => state.numOfCustomersToShow);
+  const sort = useGlobalStore((state) => state.sort);
+  const order = useGlobalStore((state) => state.order);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
@@ -17,6 +19,8 @@ export default function Customers() {
   const customersOptions: TUseCustomersOptions = {
     page: currentPage,
     limit: numOfCustomersToShow,
+    sort,
+    order,
     searchQuery,
   };
 

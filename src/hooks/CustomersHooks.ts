@@ -4,7 +4,7 @@ import { handleSearch } from '../lib/fetchers/CustomersFetchers';
 import { TCustomer, TUseCustomersOptions } from '../typings';
 
 const useCustomers = (options: TUseCustomersOptions) => {
-    const { page, limit, searchQuery } = options;
+    const { page, limit, searchQuery, sort, order } = options;
     const [data, setData] = useState<TCustomer[]>();
     const [error, setError] = useState<string>();
     const [isLoading, setIsLoading] = useState(true);
@@ -20,7 +20,9 @@ const useCustomers = (options: TUseCustomersOptions) => {
                 } else {
                     const urlSearchParams = new URLSearchParams({
                         _page: page?.toString() || '1',
-                        _limit: limit?.toString() || '10'
+                        _limit: limit?.toString() || '10',
+                        _sort: sort?.join(",").toString() || 'id',
+                        _order: order?.toString() || 'asc'
                     });
                     const url = `${BASE_API_URL}/Customer?${urlSearchParams.toString()}`;
 
@@ -46,7 +48,7 @@ const useCustomers = (options: TUseCustomersOptions) => {
         };
 
         fetchData();
-    }, [page, limit, searchQuery]);
+    }, [page, limit, searchQuery, sort, order]);
 
     return { data, error, isLoading };
 };

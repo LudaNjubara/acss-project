@@ -17,6 +17,8 @@ type TCustomer = {
 type TUseCustomersOptions = {
     page?: number;
     limit?: number;
+    sort?: string[];
+    order: "asc" | "desc";
     searchQuery?: string;
 };
 
@@ -27,5 +29,13 @@ type TCurrentActionState = {
     customer: TCustomer | null;
 };
 
-export { TAction, TCurrentActionState, TCustomer, TToastData, TUseCustomersOptions };
+type TCustomerKey = keyof TCustomer | "actions";
+
+type TCustomerColumn = {
+    field: TCustomerKey;
+    headerName: string;
+    sortable?: boolean;
+};
+
+export { TAction, TCurrentActionState, TCustomer, TCustomerColumn, TCustomerKey, TToastData, TUseCustomersOptions };
 
