@@ -150,14 +150,15 @@ export default function CustomersTable({ data }: TCustomersTableProps) {
   });
 
   const handleSort = (field: TCustomerKey) => {
-    // sort is an array of strings
-    const isAlreadySorted = sort.includes(field);
-
-    // if it's already sorted, we reverse the order
-    const newOrder = isAlreadySorted && order === "asc" ? "desc" : "asc";
-
-    setSort([...sort, field]);
-    setOrder(newOrder);
+    if (sort.includes(field)) {
+      const newOrder = [...order];
+      const index = sort.indexOf(field);
+      newOrder[index] = order[index] === "asc" ? "desc" : "asc";
+      setOrder(newOrder);
+    } else {
+      setSort([...sort, field]);
+      setOrder([...order, "asc"]);
+    }
   };
 
   const { isOpen, openModal, closeModal, isOk, confirmModal, isCancel, cancelModal } = useModal();

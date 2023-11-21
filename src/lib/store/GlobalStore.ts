@@ -1,6 +1,6 @@
 import { create } from 'zustand'
+import { TOrderBy } from '../../typings'
 
-type TOrderBy = "asc" | "desc"
 
 export type TGlobalStoreType = {
     isLoggedIn: boolean
@@ -9,8 +9,8 @@ export type TGlobalStoreType = {
     setNumOfCustomersToShow: (numOfCustomersToShow: number) => void
     sort: string[]
     setSort: (sort: string[]) => void
-    order: TOrderBy
-    setOrder: (order: TOrderBy) => void
+    order: TOrderBy[]
+    setOrder: (order: TOrderBy[]) => void
 }
 
 const useGlobalStore = create<TGlobalStoreType>((set) => ({
@@ -23,8 +23,8 @@ const useGlobalStore = create<TGlobalStoreType>((set) => ({
     sort: [],
     setSort: (sort: string[]) => set({ sort }),
 
-    order: 'asc',
-    setOrder: (order: TOrderBy) => set({ order }),
+    order: [],
+    setOrder: (order: TOrderBy[]) => set({ order })
 }))
 
 export default useGlobalStore

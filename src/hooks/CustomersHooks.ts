@@ -22,7 +22,7 @@ const useCustomers = (options: TUseCustomersOptions) => {
                         _page: page?.toString() || '1',
                         _limit: limit?.toString() || '10',
                         _sort: sort?.join(",").toString() || 'id',
-                        _order: order?.toString() || 'asc'
+                        _order: order?.join(",").toString() || 'asc',
                     });
                     const url = `${BASE_API_URL}/Customer?${urlSearchParams.toString()}`;
 

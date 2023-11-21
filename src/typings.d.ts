@@ -14,11 +14,13 @@ type TCustomer = {
     cityId: number | null
 }
 
+type TOrderBy = "asc" | "desc"
+
 type TUseCustomersOptions = {
     page?: number;
     limit?: number;
-    sort?: string[];
-    order: "asc" | "desc";
+    sort: string[];
+    order: TOrderBy[];
     searchQuery?: string;
 };
 
@@ -37,5 +39,5 @@ type TCustomerColumn = {
     sortable?: boolean;
 };
 
-export { TAction, TCurrentActionState, TCustomer, TCustomerColumn, TCustomerKey, TToastData, TUseCustomersOptions };
+export { TAction, TCurrentActionState, TCustomer, TCustomerColumn, TCustomerKey, TOrderBy, TToastData, TUseCustomersOptions };
 
