@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { BASE_API_URL, MIN_PASSWORD_LENGTH } from "../../../lib/constants/Index";
 
@@ -48,7 +48,7 @@ export default function RegisterForm() {
     }));
   };
 
-  const handleSubmit = async (event: React.FormEvent) => {
+  const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
     if (!isSubmitEnabled) return;
 

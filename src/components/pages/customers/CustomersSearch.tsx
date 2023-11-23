@@ -1,12 +1,12 @@
 import { Search } from "lucide-react";
-import { memo } from "react";
+import { FormEvent, memo } from "react";
 
 type TCustomersSearchProps = {
   setSearchQuery: (query: string) => void;
 };
 
 function CustomersSearch({ setSearchQuery }: TCustomersSearchProps) {
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
     const formData = new FormData(e.target as HTMLFormElement);

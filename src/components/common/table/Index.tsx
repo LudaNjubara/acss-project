@@ -2,14 +2,14 @@ import { Edit, SortAscIcon, Trash } from "lucide-react";
 import { TAction, TCustomer, TCustomerColumn, TCustomerKey } from "../../../typings";
 
 type TableProps = {
-  isAdmin: boolean;
+  isLoggedIn: boolean;
   data?: any[];
   columns: TCustomerColumn[];
   onSort?: (field: TCustomerKey) => void;
   handleOpenModal: (customer: TCustomer, action: TAction) => void;
 };
 
-export const Table = ({ isAdmin, data, columns, onSort, handleOpenModal }: TableProps) => {
+export const Table = ({ isLoggedIn, data, columns, onSort, handleOpenModal }: TableProps) => {
   return (
     <div className="overflow-hidden rounded-lg border-2 border-neutral-900">
       <table className="w-full overflow-x-auto divide-gray-200">
@@ -21,7 +21,7 @@ export const Table = ({ isAdmin, data, columns, onSort, handleOpenModal }: Table
                 onClick={() => column.sortable && onSort && onSort(column.field)}
                 scope="col"
                 className={`px-5 py-4 font-semibold text-neutral-500 uppercase bg-neutral-900 cursor-pointer hover:bg-neutral-900/70 transition-colors duration-200 ${
-                  column.field === "actions" && !isAdmin ? "hidden" : ""
+                  column.field === "actions" && !isLoggedIn ? "hidden" : ""
                 }`}
               >
                 <div className="flex items-center justify-between gap-3">
@@ -39,7 +39,7 @@ export const Table = ({ isAdmin, data, columns, onSort, handleOpenModal }: Table
             <tr key={customer.id} className={`${idx % 2 === 0 ? "bg-neutral-800" : "bg-neutral-800/60"}`}>
               {columns.map((column) =>
                 column.field === "actions" ? (
-                  isAdmin && (
+                  isLoggedIn && (
                     <td className="px-5 py-4" key={column.field}>
                       <div className="flex items-center gap-3">
                         <button

@@ -1,10 +1,6 @@
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import useModal from "../../../hooks/useModal";
-import {
-  ADMIN_USER_NAMES,
-  BASE_API_URL,
-  NUM_OF_CUSTOMERS_TO_SHOW_DROPDOWN_OPTIONS,
-} from "../../../lib/constants/Index";
+import { BASE_API_URL, NUM_OF_CUSTOMERS_TO_SHOW_DROPDOWN_OPTIONS } from "../../../lib/constants/Index";
 import useGlobalStore from "../../../lib/store/GlobalStore";
 import { TAction, TCurrentActionState, TCustomer, TCustomerColumn, TCustomerKey } from "../../../typings";
 import { Modal } from "../../common/modal/Index";
@@ -21,7 +17,7 @@ const customerColumns: TCustomerColumn[] = [
 
 type EditFormProps = {
   customer: any;
-  handleConfirmModal: (event: React.FormEvent<HTMLFormElement>) => void;
+  handleConfirmModal: (event: FormEvent<HTMLFormElement>) => void;
   cancelModal: () => void;
 };
 
@@ -103,7 +99,7 @@ const EditForm = ({ customer, handleConfirmModal, cancelModal }: EditFormProps) 
 
 type DeleteFormProps = {
   customer: any;
-  handleConfirmModal: (event: React.FormEvent<HTMLFormElement>) => void;
+  handleConfirmModal: (event: FormEvent<HTMLFormElement>) => void;
   cancelModal: () => void;
 };
 
@@ -141,15 +137,13 @@ type TCustomersTableProps = {
 
 export default function CustomersTable({ data }: TCustomersTableProps) {
   // zustand state and actions
-  const user = useGlobalStore((state) => state.user);
+  const isLoggedIn = useGlobalStore((state) => state.isLoggedIn);
   const numOfCustomersToShow = useGlobalStore((state) => state.numOfCustomersToShow);
   const setNumOfCustomersToShow = useGlobalStore((state) => state.setNumOfCustomersToShow);
   const sort = useGlobalStore((state) => state.sort);
   const setSort = useGlobalStore((state) => state.setSort);
   const order = useGlobalStore((state) => state.order);
   const setOrder = useGlobalStore((state) => state.setOrder);
-
-  const isAdmin = !!(user && ADMIN_USER_NAMES.includes(user.name));
 
   const [currentActionState, setCurrentActionState] = useState<TCurrentActionState>({
     action: null,
@@ -232,7 +226,7 @@ export default function CustomersTable({ data }: TCustomersTableProps) {
     }
   };
 
-  const handleConfirmModal = (e?: React.FormEvent<HTMLFormElement>) => {
+  const handleConfirmModal = (e?: FormEvent<HTMLFormElement>) => {
     if (currentActionState.customer === null) return;
 
     switch (currentActionState.action) {
@@ -298,7 +292,7 @@ export default function CustomersTable({ data }: TCustomersTableProps) {
         </div>
 
         <Table
-          isAdmin={isAdmin}
+          isLoggedIn={isLoggedIn}
           data={data}
           columns={customerColumns}
           handleOpenModal={handleOpenModal}

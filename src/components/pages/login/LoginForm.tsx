@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { BASE_API_URL, MIN_PASSWORD_LENGTH } from "../../../lib/constants/Index";
 import useGlobalStore from "../../../lib/store/GlobalStore";
@@ -45,7 +45,7 @@ export default function LoginForm() {
     }));
   };
 
-  const handleSubmit = async (event: React.FormEvent) => {
+  const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
     if (!isSubmitEnabled) return;
 
