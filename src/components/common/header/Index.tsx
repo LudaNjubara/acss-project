@@ -4,6 +4,7 @@ import useGlobalStore from "../../../lib/store/GlobalStore";
 
 export default function Header() {
   // zustand state and actions
+  const user = useGlobalStore((state) => state.user);
   const setIsLoggedIn = useGlobalStore((state) => state.setIsLoggedIn);
   const isLoggedIn = useGlobalStore((state) => state.isLoggedIn);
 
@@ -43,9 +44,19 @@ export default function Header() {
                 </Link>
               </li>
 
-              <li>
+              <span className="h-10 w-[2px] bg-neutral-400/25"></span>
+
+              <li className="flex items-center gap-3">
+                <Link
+                  to="/profile"
+                  className={`text-neutral-200 rounded-full py-3 px-5 hover:bg-neutral-700/50 transition-colors duration-200 ${
+                    location.pathname === "/profile" ? "bg-neutral-700/40" : ""
+                  }`}
+                >
+                  {user?.name}
+                </Link>
                 <button
-                  className="grid place-items-center rounded-full w-11 aspect-square ml-12 bg-red-600 hover:bg-red-500 focus:bg-red-500 transition-colors duration-300"
+                  className="grid place-items-center rounded-full w-11 aspect-square bg-red-600 hover:bg-red-500 focus:bg-red-500 transition-colors duration-300"
                   onClick={handleLogout}
                 >
                   <LogOut size={20} className="opacity-80" />
