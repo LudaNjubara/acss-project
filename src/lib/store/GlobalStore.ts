@@ -1,8 +1,10 @@
 import { create } from 'zustand'
-import { TOrderBy } from '../../typings'
+import { TOrderBy, TUser } from '../../typings'
 
 
-export type TGlobalStoreType = {
+type TGlobalStoreType = {
+    user: TUser | null
+    setUser: (user: TUser) => void
     isLoggedIn: boolean
     setIsLoggedIn: (isLoggedIn: boolean) => void
     numOfCustomersToShow: number
@@ -14,8 +16,11 @@ export type TGlobalStoreType = {
 }
 
 const useGlobalStore = create<TGlobalStoreType>((set) => ({
-    isLoggedIn: !!localStorage.getItem('token'),
+    isLoggedIn: !!sessionStorage.getItem('token'),
     setIsLoggedIn: (isLoggedIn: boolean) => set({ isLoggedIn }),
+
+    user: null,
+    setUser: (user: TUser) => set({ user }),
 
     numOfCustomersToShow: 10,
     setNumOfCustomersToShow: (numOfCustomersToShow: number) => set({ numOfCustomersToShow }),

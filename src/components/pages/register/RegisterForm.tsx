@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { BASE_API_URL } from "../../../lib/constants/Index";
+import { BASE_API_URL, MIN_PASSWORD_LENGTH } from "../../../lib/constants/Index";
 
 export default function RegisterForm() {
   const navigation = useNavigate();
@@ -41,7 +41,10 @@ export default function RegisterForm() {
   const validatePassword = (value: string) => {
     setErrors((prevState) => ({
       ...prevState,
-      password: value.length >= 8 ? "" : "Password must be at least 8 characters",
+      password:
+        value.length >= MIN_PASSWORD_LENGTH
+          ? ""
+          : `Password must be at least ${MIN_PASSWORD_LENGTH} characters`,
     }));
   };
 

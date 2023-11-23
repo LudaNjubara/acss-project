@@ -1,6 +1,10 @@
 import { useState } from "react";
 import useModal from "../../../hooks/useModal";
-import { BASE_API_URL, NUM_OF_CUSTOMERS_TO_SHOW_DROPDOWN_OPTIONS } from "../../../lib/constants/Index";
+import {
+  ADMIN_USER_NAMES,
+  BASE_API_URL,
+  NUM_OF_CUSTOMERS_TO_SHOW_DROPDOWN_OPTIONS,
+} from "../../../lib/constants/Index";
 import useGlobalStore from "../../../lib/store/GlobalStore";
 import { TAction, TCurrentActionState, TCustomer, TCustomerColumn, TCustomerKey } from "../../../typings";
 import { Modal } from "../../common/modal/Index";
@@ -137,12 +141,15 @@ type TCustomersTableProps = {
 
 export default function CustomersTable({ data }: TCustomersTableProps) {
   // zustand state and actions
+  const user = useGlobalStore((state) => state.user);
   const numOfCustomersToShow = useGlobalStore((state) => state.numOfCustomersToShow);
   const setNumOfCustomersToShow = useGlobalStore((state) => state.setNumOfCustomersToShow);
   const sort = useGlobalStore((state) => state.sort);
   const setSort = useGlobalStore((state) => state.setSort);
   const order = useGlobalStore((state) => state.order);
   const setOrder = useGlobalStore((state) => state.setOrder);
+
+  const isAdmin = !!(user && ADMIN_USER_NAMES.includes(user.name));
 
   const [currentActionState, setCurrentActionState] = useState<TCurrentActionState>({
     action: null,
@@ -161,7 +168,7 @@ export default function CustomersTable({ data }: TCustomersTableProps) {
     }
   };
 
-  const { isOpen, openModal, closeModal, isOk, confirmModal, isCancel, cancelModal } = useModal();
+  const { isOpen, openModal, confirmModal, cancelModal } = useModal();
 
   const handleOpenModal = (customer: TCustomer, action: TAction) => {
     setCurrentActionState({ action, customer });
@@ -174,7 +181,7 @@ export default function CustomersTable({ data }: TCustomersTableProps) {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Authorization: `Bearer ${sessionStorage.getItem("token")}`,
         },
         body: JSON.stringify(customer),
       });
@@ -203,7 +210,7 @@ export default function CustomersTable({ data }: TCustomersTableProps) {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Authorization: `Bearer ${sessionStorage.getItem("token")}`,
         },
       });
 
@@ -290,7 +297,13 @@ export default function CustomersTable({ data }: TCustomersTableProps) {
           </div>
         </div>
 
-        <Table data={data} columns={customerColumns} handleOpenModal={handleOpenModal} onSort={handleSort} />
+        <Table
+          isAdmin={isAdmin}
+          data={data}
+          columns={customerColumns}
+          handleOpenModal={handleOpenModal}
+          onSort={handleSort}
+        />
       </div>
 
       {/* Actions modal */}

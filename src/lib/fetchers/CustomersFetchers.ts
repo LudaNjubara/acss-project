@@ -6,7 +6,7 @@ const handleSearch = async (searchQuery: string) => {
     const res = await fetch(`${BASE_API_URL}/Customer?q=${searchQuery}`, {
         headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
         },
     });
 

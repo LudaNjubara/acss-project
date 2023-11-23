@@ -29,7 +29,7 @@ const useCustomers = (options: TUseCustomersOptions) => {
                     const res = await fetch(url, {
                         headers: {
                             "Content-Type": "application/json",
-                            Authorization: `Bearer ${localStorage.getItem("token")}`,
+                            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
                         },
                     });
 

@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { BASE_API_URL } from "../../../lib/constants/Index";
+import { BASE_API_URL, MIN_PASSWORD_LENGTH } from "../../../lib/constants/Index";
 import useGlobalStore from "../../../lib/store/GlobalStore";
 
 export default function LoginForm() {
   // zustand state and actions
+  const setUser = useGlobalStore((state) => state.setUser);
   const setIsLoggedIn = useGlobalStore((state) => state.setIsLoggedIn);
 
   const navigation = useNavigate();
@@ -37,7 +38,10 @@ export default function LoginForm() {
   const validatePassword = (value: string) => {
     setErrors((prevState) => ({
       ...prevState,
-      password: value.length >= 8 ? "" : "Password must be at least 8 characters",
+      password:
+        value.length >= MIN_PASSWORD_LENGTH
+          ? ""
+          : `Password must be at least ${MIN_PASSWORD_LENGTH} characters`,
     }));
   };
 
@@ -57,8 +61,9 @@ export default function LoginForm() {
         setResponseError(message || "Something went wrong");
       }
 
-      const { access_token } = await res.json();
-      localStorage.setItem("token", access_token);
+      const { access_token, user } = await res.json();
+      sessionStorage.setItem("token", access_token);
+      setUser(user);
       setIsLoggedIn(true);
 
       navigation("/");

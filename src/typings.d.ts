@@ -1,3 +1,10 @@
+
+type TUser = {
+    id: number,
+    name: string,
+    email: string,
+}
+
 type TToastData = {
     message: string;
     type: "success" | "error" | "";
@@ -39,5 +46,5 @@ type TCustomerColumn = {
     sortable?: boolean;
 };
 
-export { TAction, TCurrentActionState, TCustomer, TCustomerColumn, TCustomerKey, TOrderBy, TToastData, TUseCustomersOptions };
+export { TAction, TCurrentActionState, TCustomer, TCustomerColumn, TCustomerKey, TOrderBy, TToastData, TUseCustomersOptions, TUser };
 
