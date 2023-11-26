@@ -1,17 +1,8 @@
-import { FormEvent, useState, MouseEvent } from "react";
+import { FormEvent, useState } from "react";
 import useModal from "../../../hooks/useModal";
-import {
-  BASE_API_URL,
-  NUM_OF_CUSTOMERS_TO_SHOW_DROPDOWN_OPTIONS,
-} from "../../../lib/constants/Index";
+import { BASE_API_URL, NUM_OF_CUSTOMERS_TO_SHOW_DROPDOWN_OPTIONS } from "../../../lib/constants/Index";
 import useGlobalStore from "../../../lib/store/GlobalStore";
-import {
-  TAction,
-  TCurrentActionState,
-  TCustomer,
-  TCustomerColumn,
-  TCustomerKey,
-} from "../../../typings";
+import { TAction, TCurrentActionState, TCustomer, TCustomerColumn, TCustomerKey } from "../../../typings";
 import { Modal } from "../../common/modal/Index";
 import { Table } from "../../common/table/Index";
 import { toastObserver } from "../../common/toast/Index";
@@ -31,11 +22,7 @@ type EditFormProps = {
   cancelModal: () => void;
 };
 
-const EditForm = ({
-  customer,
-  handleConfirmModal,
-  cancelModal,
-}: EditFormProps) => {
+const EditForm = ({ customer, handleConfirmModal, cancelModal }: EditFormProps) => {
   return (
     <>
       <h2 className="text-2xl mb-2 font-semibold">Edit customer</h2>
@@ -117,11 +104,7 @@ type DeleteFormProps = {
   cancelModal: () => void;
 };
 
-const DeleteForm = ({
-  customer,
-  handleConfirmModal,
-  cancelModal,
-}: DeleteFormProps) => {
+const DeleteForm = ({ customer, handleConfirmModal, cancelModal }: DeleteFormProps) => {
   return (
     <>
       <h2 className="text-2xl mb-2 font-semibold">Delete customer</h2>
@@ -133,10 +116,7 @@ const DeleteForm = ({
         ?
       </p>
 
-      <form
-        onSubmit={handleConfirmModal}
-        className="flex items-center justify-end gap-3 mt-5"
-      >
+      <form onSubmit={handleConfirmModal} className="flex items-center justify-end gap-3 mt-5">
         <button
           type="button"
           onClick={() => cancelModal()}
@@ -144,10 +124,7 @@ const DeleteForm = ({
         >
           Cancel
         </button>
-        <button
-          type="submit"
-          className="px-4 py-2 rounded-md bg-red-600 text-neutral-50 hover:bg-red-500"
-        >
+        <button type="submit" className="px-4 py-2 rounded-md bg-red-600 text-neutral-50 hover:bg-red-500">
           Delete
         </button>
       </form>
@@ -162,22 +139,17 @@ type TCustomersTableProps = {
 export default function CustomersTable({ data }: TCustomersTableProps) {
   // zustand state and actions
   const isLoggedIn = useGlobalStore((state) => state.isLoggedIn);
-  const numOfCustomersToShow = useGlobalStore(
-    (state) => state.numOfCustomersToShow
-  );
-  const setNumOfCustomersToShow = useGlobalStore(
-    (state) => state.setNumOfCustomersToShow
-  );
+  const numOfCustomersToShow = useGlobalStore((state) => state.numOfCustomersToShow);
+  const setNumOfCustomersToShow = useGlobalStore((state) => state.setNumOfCustomersToShow);
   const sort = useGlobalStore((state) => state.sort);
   const setSort = useGlobalStore((state) => state.setSort);
   const order = useGlobalStore((state) => state.order);
   const setOrder = useGlobalStore((state) => state.setOrder);
 
-  const [currentActionState, setCurrentActionState] =
-    useState<TCurrentActionState>({
-      action: null,
-      customer: null,
-    });
+  const [currentActionState, setCurrentActionState] = useState<TCurrentActionState>({
+    action: null,
+    customer: null,
+  });
 
   const actionModalCommands = useModal();
   const accountsModalCommands = useModal();
@@ -194,22 +166,18 @@ export default function CustomersTable({ data }: TCustomersTableProps) {
     }
   };
 
-  const handleOpenModal = (
-    customer: TCustomer,
-    action: TAction,
-    e: MouseEvent<HTMLTableRowElement>
-  ) => {
+  const handleOpenModal = (customer: TCustomer, action: TAction) => {
     console.log(customer, action);
     setCurrentActionState({ action, customer });
 
     switch (action) {
       case "edit":
       case "delete":
-        actionModalCommands.openModal(e);
+        actionModalCommands.openModal();
         break;
 
       case "view_accounts":
-        accountsModalCommands.openModal(e);
+        accountsModalCommands.openModal();
         break;
 
       default:
@@ -315,16 +283,11 @@ export default function CustomersTable({ data }: TCustomersTableProps) {
       <div className="flex flex-col gap-5">
         <div className="flex items-center justify-between">
           <p className="text-lg text-neutral-500">
-            Showing{" "}
-            <span className="px-1 font-semibold">{data?.length || 0}</span>{" "}
-            customer(s)
+            Showing <span className="px-1 font-semibold">{data?.length || 0}</span> customer(s)
           </p>
 
           <div className="flex items-center gap-2">
-            <label
-              htmlFor="numOfCustomersToShow"
-              className="text-lg text-neutral-500"
-            >
+            <label htmlFor="numOfCustomersToShow" className="text-lg text-neutral-500">
               Show
             </label>
             <select
@@ -355,10 +318,7 @@ export default function CustomersTable({ data }: TCustomersTableProps) {
 
       {/* Actions modal */}
       {actionModalCommands.isOpen && (
-        <Modal
-          isOpen={actionModalCommands.isOpen}
-          closeModal={actionModalCommands.closeModal}
-        >
+        <Modal isOpen={actionModalCommands.isOpen} closeModal={actionModalCommands.closeModal}>
           {currentActionState.action === "edit" && (
             <EditForm
               customer={currentActionState.customer}
@@ -378,14 +338,10 @@ export default function CustomersTable({ data }: TCustomersTableProps) {
 
       {/* Accounts modal */}
       {accountsModalCommands.isOpen && (
-        <Modal
-          isOpen={accountsModalCommands.isOpen}
-          closeModal={accountsModalCommands.closeModal}
-        >
+        <Modal isOpen={accountsModalCommands.isOpen} closeModal={accountsModalCommands.closeModal}>
           <>
             <h2 className="text-2xl mb-2 font-semibold">
-              {currentActionState.customer?.name}{" "}
-              {currentActionState.customer?.surname} accounts
+              {currentActionState.customer?.name} {currentActionState.customer?.surname} accounts
             </h2>
             <AccountsTable customer={currentActionState.customer} />
           </>

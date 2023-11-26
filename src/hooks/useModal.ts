@@ -1,14 +1,11 @@
-import { useState, MouseEvent } from "react";
+import { useState } from "react";
 
 function useModal(initialState = false) {
   const [isOpen, setIsOpen] = useState(initialState);
   const [isOk, setIsOk] = useState(false);
   const [isCancel, setIsCancel] = useState(false);
 
-  function openModal(e?: MouseEvent<any>) {
-    if (e) {
-      e.stopPropagation();
-    }
+  function openModal() {
     setIsOpen(true);
   }
 
