@@ -27,6 +27,13 @@ export default function AccountsModal({ currentActionState }: TAccountsModalProp
       </h2>
       <AccountsTable data={data} />
       <AccountsPagination />
+
+      {error && (
+        <div className="flex flex-col gap-3">
+          <h2 className="text-2xl font-semibold">Error</h2>
+          <p className="text-lg text-red-500">{error}</p>
+        </div>
+      )}
     </>
   );
 }

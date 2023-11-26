@@ -157,14 +157,6 @@ export default function CustomersTable({ data }: TCustomersTableProps) {
     customer: null,
   });
 
-  const customerColumns: TCustomersTableColumn[] = [
-    { field: "name", headerName: "Name", sortable: true },
-    { field: "surname", headerName: "Surname", sortable: true },
-    { field: "email", headerName: "Email", sortable: true },
-    { field: "telephone", headerName: "Telephone", sortable: true },
-    { field: "actions", headerName: "Actions" },
-  ];
-
   const actionsModalCommands = useModal();
   const accountsModalCommands = useModal();
 

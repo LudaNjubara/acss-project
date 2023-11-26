@@ -18,12 +18,6 @@ type TAccountsTableProps = {
 export default function AccountsTable({ data }: TAccountsTableProps) {
   // zustand state and actions
   const isLoggedIn = useGlobalStore((state) => state.isLoggedIn);
-  const numOfCustomersToShow = useGlobalStore((state) => state.numOfCustomersToShow);
-  const setNumOfCustomersToShow = useGlobalStore((state) => state.setNumOfCustomersToShow);
-  const sort = useGlobalStore((state) => state.sort);
-  const setSort = useGlobalStore((state) => state.setSort);
-  const order = useGlobalStore((state) => state.order);
-  const setOrder = useGlobalStore((state) => state.setOrder);
 
   const handleOpenModal = () => {
     console.log("open modal");
