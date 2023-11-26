@@ -14,7 +14,7 @@ type TAccountsModalProps = {
 
 export default function AccountsModal({ currentActionState }: TAccountsModalProps) {
   const [currentPage, setCurrentPage] = useState(1);
-  const [accountsLimit] = useState(10);
+  const [accountsLimit] = useState(7);
 
   const customer = currentActionState.customer;
   const accountsOptions: TUseAccountsOptions = {

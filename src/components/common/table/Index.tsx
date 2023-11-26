@@ -1,16 +1,17 @@
 import { Edit, SortAscIcon, Trash } from "lucide-react";
 import { formatDate } from "../../../lib/util/Utils";
-import { TAction, TCustomer, TCustomerKey } from "../../../typings";
+import { TAccount, TAction, TCustomer, TCustomerKey } from "../../../typings";
 
 type TableProps = {
   isLoggedIn: boolean;
   data?: any[];
   columns: any[];
   onSort?: (field: TCustomerKey) => void;
-  handleOpenModal: (customer: TCustomer, action: TAction) => void;
+  handleOpenModal?: (customer: TCustomer, action: TAction) => void;
+  handleRowClick?: (account: TAccount) => void;
 };
 
-export const Table = ({ isLoggedIn, data, columns, onSort, handleOpenModal }: TableProps) => {
+export const Table = ({ isLoggedIn, data, columns, onSort, handleOpenModal, handleRowClick }: TableProps) => {
   return (
     <div className="overflow-hidden rounded-lg border-2 border-neutral-900">
       <table className="w-full overflow-x-auto divide-gray-200">
@@ -39,13 +40,15 @@ export const Table = ({ isLoggedIn, data, columns, onSort, handleOpenModal }: Ta
           {data?.map((row, idx) => (
             <tr
               key={`${Math.floor(Math.random() * 1000)} ${row.id}`}
-              className={`${isLoggedIn ? (idx % 2 === 0 ? "bg-neutral-800" : "bg-neutral-800/60") : ""} ${
-                isLoggedIn ? "hover:bg-neutral-900/50 cursor-pointer" : ""
+              className={`${isLoggedIn ? (idx % 2 === 0 ? "bg-neutral-800" : "bg-neutral-900/30") : ""} ${
+                isLoggedIn ? "hover:bg-neutral-900/80 cursor-pointer" : ""
               }`}
               onClick={(e) => {
                 if (!isLoggedIn) return;
                 e.stopPropagation();
-                handleOpenModal(row, "view_accounts");
+
+                if (handleRowClick) handleRowClick(row);
+                else if (handleOpenModal) handleOpenModal(row, "view_accounts");
               }}
             >
               {columns.map((column) =>
@@ -57,7 +60,7 @@ export const Table = ({ isLoggedIn, data, columns, onSort, handleOpenModal }: Ta
                           type="button"
                           onClick={(e) => {
                             e.stopPropagation();
-                            handleOpenModal(row, "edit");
+                            if (handleOpenModal) handleOpenModal(row, "edit");
                           }}
                           className="p-2 rounded-md text-neutral-500 hover:text-neutral-200 hover:bg-neutral-700 transition-colors duration-200"
                         >
@@ -67,7 +70,7 @@ export const Table = ({ isLoggedIn, data, columns, onSort, handleOpenModal }: Ta
                           type="button"
                           onClick={(e) => {
                             e.stopPropagation();
-                            handleOpenModal(row, "delete");
+                            if (handleOpenModal) handleOpenModal(row, "delete");
                           }}
                           className="p-2 rounded-md text-red-500 hover:text-red-300 hover:bg-red-600/60 transition-colors duration-200"
                         >

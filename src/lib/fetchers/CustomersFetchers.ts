@@ -15,5 +15,18 @@ const handleSearch = async (searchQuery: string) => {
     return data;
 }
 
-export { handleSearch };
+const fetchCustomer = async (id: number) => {
+    const res = await fetch(`${BASE_API_URL}/Customer/${id}`, {
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+        },
+    });
+
+    const data = await res.json() as TCustomer;
+
+    return data;
+}
+
+export { fetchCustomer, handleSearch };
 

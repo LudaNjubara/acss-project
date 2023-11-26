@@ -5,6 +5,7 @@ import PrivateRoutes from "./components/common/router/PrivateRoutes";
 import Toaster from "./components/common/toast/Index";
 import CustomersView from "./components/views/customers/Index";
 import HomeView from "./components/views/home/Index";
+import AccountItemsView from "./components/views/items/AccountItemsView";
 import LoginView from "./components/views/login/Index";
 import ProfileView from "./components/views/profile/Index";
 import RegisterView from "./components/views/register/Index";
@@ -16,6 +17,7 @@ const router = createBrowserRouter(
       <Route path="login" element={<LoginView />} />
       <Route path="register" element={<RegisterView />} />
       <Route path="customers" element={<CustomersView />} />
+      <Route path="items/:billId" element={<AccountItemsView />} />
 
       {/* Private routes */}
       <Route element={<PrivateRoutes />}>

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { BASE_API_URL } from '../lib/constants/Index';
 import { fetchCreditCard } from '../lib/fetchers/AccountsFetchers';
-import { handleSearch } from '../lib/fetchers/CustomersFetchers';
+import { fetchCustomer, handleSearch } from '../lib/fetchers/CustomersFetchers';
 import { TAccount, TBill, TCustomer, TUseAccountsOptions, TUseCustomersOptions } from '../typings';
 
 const useCustomers = (options: TUseCustomersOptions) => {
@@ -84,18 +84,19 @@ const useAccounts = (options: TUseAccountsOptions) => {
 
                 const data = await Promise.all(billData.map(async (bill) => {
                     const creditCard = await fetchCreditCard(bill.creditCardId);
+                    const customer = await fetchCustomer(bill.customerId);
 
-                    const account = {
+                    const account: TAccount = {
                         id: bill.id,
                         bill,
-                        creditCard
-                    } as TAccount;
+                        creditCard,
+                        customer,
+                    }
 
                     return account;
                 }));
 
-                console.log("data", data);
-
+                console.log("data", data)
                 setData(data);
                 setError(undefined);
 

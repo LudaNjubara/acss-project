@@ -67,8 +67,8 @@ type TSeller = {
 type TAccount = {
   id: number;
   bill: TBill;
-  creditCard: TCreditCard;
-  seller: TSeller;
+  creditCard: TCreditCard | null;
+  customer: TCustomer;
 }
 
 type TAction = "edit" | "delete" | "view_accounts" | null;

@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import useGlobalStore from "../../../lib/store/GlobalStore";
 import { TAccount, TAccountsTableColumn } from "../../../typings";
 import { Table } from "../../common/table/Index";
@@ -19,8 +20,10 @@ export default function AccountsTable({ data }: TAccountsTableProps) {
   // zustand state and actions
   const isLoggedIn = useGlobalStore((state) => state.isLoggedIn);
 
-  const handleOpenModal = () => {
-    console.log("open modal");
+  const navigate = useNavigate();
+
+  const handleRowClick = (currentAccount: TAccount) => {
+    navigate(`/items/${currentAccount.bill.id}`, { state: { account: currentAccount } });
   };
 
   return (
@@ -36,7 +39,7 @@ export default function AccountsTable({ data }: TAccountsTableProps) {
           isLoggedIn={isLoggedIn}
           data={data}
           columns={accountsColumns}
-          handleOpenModal={handleOpenModal}
+          handleRowClick={handleRowClick}
         />
       </div>
     </>
