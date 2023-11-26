@@ -1,4 +1,5 @@
 import { Edit, SortAscIcon, Trash } from "lucide-react";
+import { formatDate } from "../../../lib/util/Utils";
 import { TAction, TCustomer, TCustomerKey } from "../../../typings";
 
 type TableProps = {
@@ -81,7 +82,11 @@ export const Table = ({ isLoggedIn, data, columns, onSort, handleOpenModal }: Ta
                     className="px-5 py-4"
                   >
                     {column.hasOwnProperty("nestedField") && row[column.field]
-                      ? row[column.field][column.nestedField] || <span className="text-neutral-400">N/A</span>
+                      ? column.nestedField === "date"
+                        ? formatDate(new Date(row[column.field][column.nestedField]))
+                        : row[column.field][column.nestedField] || (
+                            <span className="text-neutral-400">N/A</span>
+                          )
                       : row[column.field] || <span className="text-neutral-400">N/A</span>}
                   </td>
                 )
