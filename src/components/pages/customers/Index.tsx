@@ -1,9 +1,10 @@
 import { useState } from "react";
 
 import { useCustomers } from "../../../hooks/CustomersHooks";
+import { TOTAL_CUSTOMER_PAGES } from "../../../lib/constants/Index";
 import useGlobalStore from "../../../lib/store/GlobalStore";
 import { TUseCustomersOptions } from "../../../typings";
-import CustomersPagination from "./CustomersPagination";
+import TablePagination from "../../common/table/TablePagination";
 import CustomersSearch from "./CustomersSearch";
 import CustomersTable from "./CustomersTable";
 
@@ -30,7 +31,13 @@ export default function Customers() {
     <div className="flex flex-col gap-10 px-3">
       <CustomersSearch setSearchQuery={setSearchQuery} />
       <CustomersTable data={data} />
-      {!searchQuery && <CustomersPagination currentPage={currentPage} setCurrentPage={setCurrentPage} />}
+      {!searchQuery && (
+        <TablePagination
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+          totalPages={TOTAL_CUSTOMER_PAGES}
+        />
+      )}
 
       {error && (
         <div className="flex flex-col gap-3">

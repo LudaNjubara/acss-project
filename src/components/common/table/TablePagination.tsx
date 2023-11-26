@@ -1,15 +1,14 @@
 import { ChangeEvent } from "react";
 
-const TOTAL_PAGES = 100;
-
-type TCustomersPaginationProps = {
+type TTablePaginationProps = {
   currentPage: number;
+  totalPages: number;
   setCurrentPage: (page: number) => void;
 };
 
-export default function CustomersPagination({ currentPage, setCurrentPage }: TCustomersPaginationProps) {
+export default function TablePagination({ currentPage, setCurrentPage, totalPages }: TTablePaginationProps) {
   const handlePageChange = (page: number) => {
-    if (page >= 1 && page <= TOTAL_PAGES) {
+    if (page >= 1 && page <= totalPages) {
       setCurrentPage(page);
     }
   };
@@ -19,7 +18,7 @@ export default function CustomersPagination({ currentPage, setCurrentPage }: TCu
   };
 
   const startPage = Math.max(1, currentPage - 2);
-  const endPage = Math.min(TOTAL_PAGES, currentPage + 2);
+  const endPage = Math.min(totalPages, currentPage + 2);
 
   return (
     <div className="flex items-center justify-center space-x-2">
