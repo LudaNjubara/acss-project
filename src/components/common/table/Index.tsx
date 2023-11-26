@@ -89,6 +89,13 @@ export const Table = ({ isLoggedIn, data, columns, onSort, handleOpenModal }: Ta
           ))}
         </tbody>
       </table>
+
+      {data?.length === 0 && (
+        <div className="flex flex-col items-center justify-center p-10">
+          <h2 className="text-2xl font-semibold">No data found</h2>
+          <p className="text-lg text-neutral-500">Try searching for something else</p>
+        </div>
+      )}
     </div>
   );
 };
