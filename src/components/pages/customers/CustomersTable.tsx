@@ -2,13 +2,19 @@ import { FormEvent, useState } from "react";
 import useModal from "../../../hooks/useModal";
 import { BASE_API_URL, NUM_OF_CUSTOMERS_TO_SHOW_DROPDOWN_OPTIONS } from "../../../lib/constants/Index";
 import useGlobalStore from "../../../lib/store/GlobalStore";
-import { TAction, TCurrentActionState, TCustomer, TCustomerColumn, TCustomerKey } from "../../../typings";
+import {
+  TAction,
+  TCurrentActionState,
+  TCustomer,
+  TCustomerKey,
+  TCustomersTableColumn,
+} from "../../../typings";
 import { Modal } from "../../common/modal/Index";
 import { Table } from "../../common/table/Index";
 import { toastObserver } from "../../common/toast/Index";
-import AccountsTable from "./AccountsTable";
+import AccountsModal from "./AccountsModal";
 
-const customerColumns: TCustomerColumn[] = [
+const customerColumns: TCustomersTableColumn[] = [
   { field: "name", headerName: "Name", sortable: true },
   { field: "surname", headerName: "Surname", sortable: true },
   { field: "email", headerName: "Email", sortable: true },
@@ -151,7 +157,15 @@ export default function CustomersTable({ data }: TCustomersTableProps) {
     customer: null,
   });
 
-  const actionModalCommands = useModal();
+  const customerColumns: TCustomersTableColumn[] = [
+    { field: "name", headerName: "Name", sortable: true },
+    { field: "surname", headerName: "Surname", sortable: true },
+    { field: "email", headerName: "Email", sortable: true },
+    { field: "telephone", headerName: "Telephone", sortable: true },
+    { field: "actions", headerName: "Actions" },
+  ];
+
+  const actionsModalCommands = useModal();
   const accountsModalCommands = useModal();
 
   const handleSort = (field: TCustomerKey) => {
@@ -173,7 +187,7 @@ export default function CustomersTable({ data }: TCustomersTableProps) {
     switch (action) {
       case "edit":
       case "delete":
-        actionModalCommands.openModal();
+        actionsModalCommands.openModal();
         break;
 
       case "view_accounts":
@@ -275,7 +289,7 @@ export default function CustomersTable({ data }: TCustomersTableProps) {
         break;
     }
 
-    actionModalCommands.confirmModal();
+    actionsModalCommands.confirmModal();
   };
 
   return (
@@ -317,20 +331,20 @@ export default function CustomersTable({ data }: TCustomersTableProps) {
       </div>
 
       {/* Actions modal */}
-      {actionModalCommands.isOpen && (
-        <Modal isOpen={actionModalCommands.isOpen} closeModal={actionModalCommands.closeModal}>
+      {actionsModalCommands.isOpen && (
+        <Modal isOpen={actionsModalCommands.isOpen} closeModal={actionsModalCommands.closeModal}>
           {currentActionState.action === "edit" && (
             <EditForm
               customer={currentActionState.customer}
               handleConfirmModal={handleConfirmModal}
-              cancelModal={actionModalCommands.cancelModal}
+              cancelModal={actionsModalCommands.cancelModal}
             />
           )}
           {currentActionState.action === "delete" && (
             <DeleteForm
               customer={currentActionState.customer}
               handleConfirmModal={handleConfirmModal}
-              cancelModal={actionModalCommands.cancelModal}
+              cancelModal={actionsModalCommands.cancelModal}
             />
           )}
         </Modal>
@@ -339,12 +353,7 @@ export default function CustomersTable({ data }: TCustomersTableProps) {
       {/* Accounts modal */}
       {accountsModalCommands.isOpen && (
         <Modal isOpen={accountsModalCommands.isOpen} closeModal={accountsModalCommands.closeModal}>
-          <>
-            <h2 className="text-2xl mb-2 font-semibold">
-              {currentActionState.customer?.name} {currentActionState.customer?.surname} accounts
-            </h2>
-            <AccountsTable customer={currentActionState.customer} />
-          </>
+          <AccountsModal currentActionState={currentActionState} />
         </Modal>
       )}
     </>

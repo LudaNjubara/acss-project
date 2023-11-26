@@ -12,11 +12,13 @@ export const Modal = ({ isOpen, closeModal, children }: ModalProps) => {
   return (
     <div
       className="fixed inset-0 flex items-center justify-center bg-neutral-900/80"
-      onClick={(e) => closeModal(e)}
+      onClick={(e) => {
+        if (e.target === e.currentTarget) {
+          closeModal(e);
+        }
+      }}
     >
-      <div className="w-full max-w-md bg-neutral-800 rounded-lg p-8">
-        {children}
-      </div>
+      <div className="w-full max-w-6xl bg-neutral-800 rounded-lg p-8">{children}</div>
     </div>
   );
 };
