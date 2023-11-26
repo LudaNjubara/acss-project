@@ -38,10 +38,11 @@ export const Table = ({ isLoggedIn, data, columns, onSort, handleOpenModal }: Ta
           {data?.map((row, idx) => (
             <tr
               key={`${Math.floor(Math.random() * 1000)} ${row.id}`}
-              className={`${
-                idx % 2 === 0 ? "bg-neutral-800" : "bg-neutral-800/60"
-              } hover:bg-neutral-900/50 cursor-pointer`}
+              className={`${isLoggedIn ? (idx % 2 === 0 ? "bg-neutral-800" : "bg-neutral-800/60") : ""} ${
+                isLoggedIn ? "hover:bg-neutral-900/50 cursor-pointer" : ""
+              }`}
               onClick={(e) => {
+                if (!isLoggedIn) return;
                 e.stopPropagation();
                 handleOpenModal(row, "view_accounts");
               }}
