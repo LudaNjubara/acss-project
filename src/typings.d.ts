@@ -95,9 +95,31 @@ type TAccountsTableColumn = {
   sortable?: boolean;
 };
 
+type TCategory = {
+  id: number;
+  guid: string;
+  name: string;
+}
+
+type TSubCategory = {
+  id: number;
+  guid: string;
+  categoryId: number;
+  name: string;
+}
+
+type TProduct = {
+  id: number;
+  guid: string;
+  name: string;
+  productNumber: string;
+  color: string;
+  subCategoryId: number;
+}
+
 export {
-  TAccount, TAccountsTableColumn, TAccountsTableField, TAction, TBill, TCreditCard, TCurrentActionState,
-  TCustomer, TCustomerKey, TCustomersTableColumn, TOrderBy, TSeller, TToastData, TUseAccountsOptions, TUseCustomersOptions,
+  TAccount, TAccountsTableColumn, TAccountsTableField, TAction, TBill, TCategory, TCreditCard, TCurrentActionState,
+  TCustomer, TCustomerKey, TCustomersTableColumn, TOrderBy, TProduct, TSeller, TSubCategory, TToastData, TUseAccountsOptions, TUseCustomersOptions,
   TUser
 };
 

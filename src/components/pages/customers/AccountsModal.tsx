@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useAccounts } from "../../../hooks/CustomersHooks";
+import { useAccounts } from "../../../hooks/useAccounts";
 import { TOTAL_ACCOUNTS_PAGES } from "../../../lib/constants/Index";
 import { TAction, TCustomer, TUseAccountsOptions } from "../../../typings";
 import TablePagination from "../../common/table/TablePagination";

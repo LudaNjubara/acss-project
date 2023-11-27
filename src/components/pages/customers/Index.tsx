@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { useCustomers } from "../../../hooks/CustomersHooks";
+import { useCustomers } from "../../../hooks/useCustomers";
 import { TOTAL_CUSTOMER_PAGES } from "../../../lib/constants/Index";
 import useGlobalStore from "../../../lib/store/GlobalStore";
 import { TUseCustomersOptions } from "../../../typings";
