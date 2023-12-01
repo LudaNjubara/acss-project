@@ -1,7 +1,9 @@
 import { X } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { useNewItemForm } from "../../../hooks/useNewItemForm";
-import { TCategory, TProduct, TSubCategory } from "../../../typings";
+import { BASE_API_URL } from "../../../lib/constants/Index";
+import { TAccount, TCategory, TProduct, TSubCategory } from "../../../typings";
+import { toastObserver } from "../../common/toast/Index";
 
 const quantityOptions = [
   { value: 1, label: "1" },
@@ -35,10 +37,10 @@ export type TNewItemFormData = {
 
 type TAddNewItemFormProps = {
   setShowNewItemForm: (showNewItemForm: boolean) => void;
+  account: TAccount;
 };
 
-export default function AddNewItemForm({ setShowNewItemForm }: TAddNewItemFormProps) {
-  const isInitialRender = useRef(true);
+export default function AddNewItemForm({ setShowNewItemForm, account }: TAddNewItemFormProps) {
   const [formData, setFormData] = useState<TNewItemFormData>({
     category: undefined,
     subCategory: undefined,
@@ -48,25 +50,47 @@ export default function AddNewItemForm({ setShowNewItemForm }: TAddNewItemFormPr
 
   const { data, error } = useNewItemForm(formData);
 
-  useEffect(() => {
-    if (isInitialRender.current && data) {
-      setFormData({
-        ...formData,
-        category: data.categories[0],
-        subCategory: data.subCategories[0],
-        product: data.products[0],
-      });
-
-      isInitialRender.current = false;
-    }
-  }, [data, formData]);
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!validateForm(formData)) return;
 
-    console.log(formData);
+    try {
+      const res = await fetch(`${BASE_API_URL}/Item`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+        },
+        body: JSON.stringify({
+          billId: account.bill.id,
+          productId: formData.product?.id,
+          quantity: formData.quantity,
+          totalPrice: Math.fround(Math.random() * 1000) * formData.quantity,
+        }),
+      });
+
+      if (!res.ok) throw new Error("There was an error adding the item. Please try again.");
+
+      toastObserver.notify({
+        type: "success",
+        message: "Item added successfully.",
+        show: true,
+      });
+
+      setShowNewItemForm(false);
+    } catch (error) {
+      console.log(error);
+
+      const errorMessage =
+        error instanceof Error ? error.message : "There was an error adding the item. Please try again.";
+
+      toastObserver.notify({
+        type: "error",
+        message: errorMessage,
+        show: true,
+      });
+    }
   };
 
   return (
@@ -92,7 +116,7 @@ export default function AddNewItemForm({ setShowNewItemForm }: TAddNewItemFormPr
           <select
             name="category"
             id="category"
-            defaultValue={formData.category?.id}
+            value={formData.category?.id || data?.categories[1].id}
             onChange={(e) =>
               setFormData({
                 ...formData,
@@ -106,7 +130,7 @@ export default function AddNewItemForm({ setShowNewItemForm }: TAddNewItemFormPr
             </option>
 
             {data?.categories.map((category) => (
-              <option key={category.id} value={category.id} selected={formData.category?.id === category.id}>
+              <option key={category.id} value={category.id}>
                 {category.name}
               </option>
             ))}
@@ -120,7 +144,7 @@ export default function AddNewItemForm({ setShowNewItemForm }: TAddNewItemFormPr
           <select
             name="subCategory"
             id="subCategory"
-            defaultValue={formData.subCategory?.id}
+            value={formData.subCategory?.id || data?.subCategories[0].id}
             onChange={(e) =>
               setFormData({
                 ...formData,
@@ -136,11 +160,7 @@ export default function AddNewItemForm({ setShowNewItemForm }: TAddNewItemFormPr
             </option>
 
             {data?.subCategories.map((subCategory) => (
-              <option
-                key={subCategory.id}
-                value={subCategory.id}
-                selected={formData.subCategory?.id === subCategory.id}
-              >
+              <option key={subCategory.id} value={subCategory.id}>
                 {subCategory.name}
               </option>
             ))}
@@ -154,7 +174,7 @@ export default function AddNewItemForm({ setShowNewItemForm }: TAddNewItemFormPr
           <select
             name="products"
             id="products"
-            defaultValue={formData.product?.id}
+            value={formData.product?.id || data?.products[0].id}
             onChange={(e) =>
               setFormData({
                 ...formData,
@@ -168,7 +188,7 @@ export default function AddNewItemForm({ setShowNewItemForm }: TAddNewItemFormPr
             </option>
 
             {data?.products.map((product) => (
-              <option key={product.id} value={product.id} selected={formData.product?.id === product.id}>
+              <option key={product.id} value={product.id}>
                 {product.name}
               </option>
             ))}

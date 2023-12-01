@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import { TAccount } from "../../../typings";
 import AccountItemsDetails from "../../pages/items/AccountItemsDetails";
+import AccountItemsTable from "../../pages/items/AccountItemsTable";
 import AddNewItemForm from "../../pages/items/AddNewItemForm";
 
 export default function AccountItemsView() {
@@ -22,7 +23,8 @@ export default function AccountItemsView() {
         showNewItemForm={showNewItemForm}
         setShowNewItemForm={setShowNewItemForm}
       />
-      {showNewItemForm && <AddNewItemForm setShowNewItemForm={setShowNewItemForm} />}
+      {showNewItemForm && <AddNewItemForm setShowNewItemForm={setShowNewItemForm} account={currentAccount} />}
+      <AccountItemsTable />
     </div>
   );
 }
