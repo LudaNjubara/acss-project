@@ -71,11 +71,26 @@ type TAccount = {
   customer: TCustomer;
 }
 
+type TAccountItem = {
+  id: number;
+  guid: string;
+  billId: number;
+  quantity: number;
+  productId: number;
+  totalPrice: number;
+};
+
+type TAccountItemsOptions = {
+  billId: number;
+  page?: number;
+  limit?: number;
+};
+
 type TAction = "edit" | "delete" | "view_accounts" | null;
 
 type TCurrentActionState = {
   action: TAction;
-  customer: TCustomer | null;
+  current: any | null;
 };
 
 type TCustomerKey = keyof TCustomer | "actions";
@@ -118,7 +133,7 @@ type TProduct = {
 }
 
 export {
-  TAccount, TAccountsTableColumn, TAccountsTableField, TAction, TBill, TCategory, TCreditCard, TCurrentActionState,
+  TAccount, TAccountItem, TAccountItemsOptions, TAccountsTableColumn, TAccountsTableField, TAction, TBill, TCategory, TCreditCard, TCurrentActionState,
   TCustomer, TCustomerKey, TCustomersTableColumn, TOrderBy, TProduct, TSeller, TSubCategory, TToastData, TUseAccountsOptions, TUseCustomersOptions,
   TUser
 };

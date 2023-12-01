@@ -94,7 +94,7 @@ export default function AddNewItemForm({ setShowNewItemForm, account }: TAddNewI
   };
 
   return (
-    <div className="flex gap-10 pt-5">
+    <div className="flex gap-10">
       <div>
         <button
           type="button"

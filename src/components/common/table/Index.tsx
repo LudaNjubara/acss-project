@@ -1,17 +1,26 @@
 import { Edit, SortAscIcon, Trash } from "lucide-react";
 import { formatDate } from "../../../lib/util/Utils";
-import { TAccount, TAction, TCustomer, TCustomerKey } from "../../../typings";
+import { TAction, TCustomerKey } from "../../../typings";
 
 type TableProps = {
   isLoggedIn: boolean;
   data?: any[];
   columns: any[];
+  canEdit?: boolean;
   onSort?: (field: TCustomerKey) => void;
-  handleOpenModal?: (customer: TCustomer, action: TAction) => void;
-  handleRowClick?: (account: TAccount) => void;
+  handleOpenModal?: (current: any, action: TAction) => void;
+  handleRowClick?: (current: any) => void;
 };
 
-export const Table = ({ isLoggedIn, data, columns, onSort, handleOpenModal, handleRowClick }: TableProps) => {
+export const Table = ({
+  isLoggedIn,
+  data,
+  columns,
+  canEdit = true,
+  onSort,
+  handleOpenModal,
+  handleRowClick,
+}: TableProps) => {
   return (
     <div className="overflow-hidden rounded-lg border-2 border-neutral-900">
       <table className="w-full overflow-x-auto divide-gray-200">
@@ -41,14 +50,13 @@ export const Table = ({ isLoggedIn, data, columns, onSort, handleOpenModal, hand
             <tr
               key={`${Math.floor(Math.random() * 1000)} ${row.id}`}
               className={`${isLoggedIn ? (idx % 2 === 0 ? "bg-neutral-800" : "bg-neutral-900/30") : ""} ${
-                isLoggedIn ? "hover:bg-neutral-900/80 cursor-pointer" : ""
+                isLoggedIn && handleRowClick ? "hover:bg-neutral-900/80 cursor-pointer" : ""
               }`}
               onClick={(e) => {
                 if (!isLoggedIn) return;
                 e.stopPropagation();
 
                 if (handleRowClick) handleRowClick(row);
-                else if (handleOpenModal) handleOpenModal(row, "view_accounts");
               }}
             >
               {columns.map((column) =>
@@ -56,16 +64,18 @@ export const Table = ({ isLoggedIn, data, columns, onSort, handleOpenModal, hand
                   isLoggedIn && (
                     <td className="px-5 py-4" key={column.field}>
                       <div className="flex items-center gap-3">
-                        <button
-                          type="button"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            if (handleOpenModal) handleOpenModal(row, "edit");
-                          }}
-                          className="p-2 rounded-md text-neutral-500 hover:text-neutral-200 hover:bg-neutral-700 transition-colors duration-200"
-                        >
-                          <Edit size={18} className="opacity-50" />
-                        </button>
+                        {canEdit && (
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              if (handleOpenModal) handleOpenModal(row, "edit");
+                            }}
+                            className="p-2 rounded-md text-neutral-500 hover:text-neutral-200 hover:bg-neutral-700 transition-colors duration-200"
+                          >
+                            <Edit size={18} className="opacity-50" />
+                          </button>
+                        )}
                         <button
                           type="button"
                           onClick={(e) => {

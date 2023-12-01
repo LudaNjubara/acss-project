@@ -1,22 +1,19 @@
 import { useState } from "react";
 import { useAccounts } from "../../../hooks/useAccounts";
 import { TOTAL_ACCOUNTS_PAGES } from "../../../lib/constants/Index";
-import { TAction, TCustomer, TUseAccountsOptions } from "../../../typings";
+import { TCurrentActionState, TUseAccountsOptions } from "../../../typings";
 import TablePagination from "../../common/table/TablePagination";
 import AccountsTable from "./AccountsTable";
 
 type TAccountsModalProps = {
-  currentActionState: {
-    action: TAction;
-    customer: TCustomer | null;
-  };
+  currentActionState: TCurrentActionState;
 };
 
 export default function AccountsModal({ currentActionState }: TAccountsModalProps) {
   const [currentPage, setCurrentPage] = useState(1);
   const [accountsLimit] = useState(7);
 
-  const customer = currentActionState.customer;
+  const customer = currentActionState.current;
   const accountsOptions: TUseAccountsOptions = {
     page: currentPage,
     limit: accountsLimit,
@@ -28,7 +25,7 @@ export default function AccountsModal({ currentActionState }: TAccountsModalProp
   return (
     <div className="flex flex-col gap-10 px-3">
       <h2 className="text-3xl mb-5 font-semibold">
-        {currentActionState.customer?.name} {currentActionState.customer?.surname}{" "}
+        {currentActionState.current?.name} {currentActionState.current?.surname}{" "}
         <span className="text-lg text-neutral-400">accounts</span>
       </h2>
       <AccountsTable data={data} />

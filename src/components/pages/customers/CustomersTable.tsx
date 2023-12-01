@@ -154,7 +154,7 @@ export default function CustomersTable({ data }: TCustomersTableProps) {
 
   const [currentActionState, setCurrentActionState] = useState<TCurrentActionState>({
     action: null,
-    customer: null,
+    current: null,
   });
 
   const actionsModalCommands = useModal();
@@ -172,9 +172,12 @@ export default function CustomersTable({ data }: TCustomersTableProps) {
     }
   };
 
-  const handleOpenModal = (customer: TCustomer, action: TAction) => {
-    console.log(customer, action);
-    setCurrentActionState({ action, customer });
+  const handleRowClick = (currentCustomer: TCustomer) => {
+    if (isLoggedIn) handleOpenModal(currentCustomer, "view_accounts");
+  };
+
+  const handleOpenModal = (current: TCustomer, action: TAction) => {
+    setCurrentActionState({ action, current });
 
     switch (action) {
       case "edit":
@@ -249,7 +252,7 @@ export default function CustomersTable({ data }: TCustomersTableProps) {
   };
 
   const handleConfirmModal = (e?: FormEvent<HTMLFormElement>) => {
-    if (currentActionState.customer === null) return;
+    if (currentActionState.current === null) return;
 
     switch (currentActionState.action) {
       case "edit":
@@ -264,7 +267,7 @@ export default function CustomersTable({ data }: TCustomersTableProps) {
         const telephone = formData.get("telephone") as string;
 
         const newCustomer = {
-          ...currentActionState.customer,
+          ...currentActionState.current,
           name,
           surname,
           email,
@@ -274,7 +277,7 @@ export default function CustomersTable({ data }: TCustomersTableProps) {
         break;
 
       case "delete":
-        handleDelete(currentActionState.customer);
+        handleDelete(currentActionState.current);
         break;
 
       default:
@@ -318,6 +321,7 @@ export default function CustomersTable({ data }: TCustomersTableProps) {
           data={data}
           columns={customerColumns}
           handleOpenModal={handleOpenModal}
+          handleRowClick={handleRowClick}
           onSort={handleSort}
         />
       </div>
@@ -327,14 +331,14 @@ export default function CustomersTable({ data }: TCustomersTableProps) {
         <Modal isOpen={actionsModalCommands.isOpen} closeModal={actionsModalCommands.closeModal}>
           {currentActionState.action === "edit" && (
             <EditForm
-              customer={currentActionState.customer}
+              customer={currentActionState.current}
               handleConfirmModal={handleConfirmModal}
               cancelModal={actionsModalCommands.cancelModal}
             />
           )}
           {currentActionState.action === "delete" && (
             <DeleteForm
-              customer={currentActionState.customer}
+              customer={currentActionState.current}
               handleConfirmModal={handleConfirmModal}
               cancelModal={actionsModalCommands.cancelModal}
             />

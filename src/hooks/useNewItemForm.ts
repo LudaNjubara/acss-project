@@ -30,8 +30,6 @@ const useNewItemForm = (formData: TNewItemFormData) => {
                     const subCategoriesData = await fetchSubCategories(categoriesData[0]);
                     const productsData = await fetchProducts(subCategoriesData[0]);
 
-                    console.log(categoriesData, subCategoriesData)
-
                     setData({
                         categories: categoriesData,
                         subCategories: subCategoriesData,

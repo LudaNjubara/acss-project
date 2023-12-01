@@ -46,7 +46,6 @@ const useAccounts = (options: TUseAccountsOptions) => {
                     return account;
                 }));
 
-                console.log("data", data)
                 setData(data);
                 setError(undefined);
 
@@ -65,3 +64,4 @@ const useAccounts = (options: TUseAccountsOptions) => {
 };
 
 export { useAccounts };
+
