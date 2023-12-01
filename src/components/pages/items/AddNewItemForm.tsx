@@ -18,8 +18,12 @@ const quantityOptions = [
   { value: 10, label: "10" },
 ];
 
-const validateForm = (formData: TNewItemFormData) => {
-  const { category, subCategory, product, quantity } = formData;
+const validateForm = (event: React.FormEvent<HTMLFormElement>) => {
+  const formData = new FormData(event.currentTarget);
+  const category = formData.get("category");
+  const subCategory = formData.get("subCategory");
+  const product = formData.get("product");
+  const quantity = formData.get("quantity");
 
   if (!category || !subCategory || !product || !quantity) {
     return false;
@@ -53,7 +57,11 @@ export default function AddNewItemForm({ setShowNewItemForm, account }: TAddNewI
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!validateForm(formData)) return;
+    if (!validateForm(e)) return;
+
+    const formData = new FormData(e.currentTarget);
+    const productId = formData.get("product") as string;
+    const quantity = parseInt(formData.get("quantity") as string);
 
     try {
       const res = await fetch(`${BASE_API_URL}/Item`, {
@@ -64,9 +72,9 @@ export default function AddNewItemForm({ setShowNewItemForm, account }: TAddNewI
         },
         body: JSON.stringify({
           billId: account.bill.id,
-          productId: formData.product?.id,
-          quantity: formData.quantity,
-          totalPrice: Math.fround(Math.random() * 1000) * formData.quantity,
+          productId: parseInt(productId),
+          quantity,
+          totalPrice: (Math.fround(Math.random() * 100) * quantity).toFixed(2),
         }),
       });
 
@@ -168,12 +176,12 @@ export default function AddNewItemForm({ setShowNewItemForm, account }: TAddNewI
         </div>
 
         <div className="flex flex-col gap-1">
-          <label htmlFor="products" className="text-neutral-200 text-base">
+          <label htmlFor="product" className="text-neutral-200 text-base">
             Products
           </label>
           <select
-            name="products"
-            id="products"
+            name="product"
+            id="product"
             value={formData.product?.id || data?.products[0].id}
             onChange={(e) =>
               setFormData({
