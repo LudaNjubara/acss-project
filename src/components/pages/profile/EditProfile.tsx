@@ -1,12 +1,14 @@
 import { FormEvent, useState } from "react";
-import { MIN_PASSWORD_LENGTH } from "../../../lib/constants/Index";
+import { BASE_API_URL, MIN_PASSWORD_LENGTH } from "../../../lib/constants/Index";
 import useGlobalStore from "../../../lib/store/GlobalStore";
+import { toastObserver } from "../../common/toast/Index";
 
 export default function EditProfile() {
   // zustand state and actions
   const user = useGlobalStore((state) => state.user);
 
   const [userData, setUserData] = useState({
+    id: user?.id || "",
     name: user?.name || "",
     email: user?.email || "",
     password: "",
@@ -25,6 +27,8 @@ export default function EditProfile() {
   const isSubmitEnabled =
     !(errors.name || errors.email || errors.password || errors.confirmPassword) &&
     !!(userData.email && userData.name && userData.password && userData.confirmPassword);
+
+  console.log(isSubmitEnabled);
 
   const validateName = (value: string) => {
     setErrors((prevState) => ({ ...prevState, name: value ? "" : "Name is required" }));
@@ -60,28 +64,44 @@ export default function EditProfile() {
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
-    if (!isSubmitEnabled) return;
+    if (!isSubmitEnabled || !user?.id) return;
 
-    /*  try {
-      const res = await fetch(`${BASE_API_URL}/auth/register`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(userData),
+    try {
+      // remove confirmPassword from userData
+      const { confirmPassword, ...userDataWithoutConfirmPassword } = userData;
+
+      const res = await fetch(`${BASE_API_URL}/User/${user.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify(userDataWithoutConfirmPassword),
       });
 
       if (!res.ok) {
         const { message } = await res.json();
         setResponseError(message || "Something went wrong");
+        toastObserver.notify({
+          message: `Something went wrong while updating profile`,
+          type: "error",
+          show: true,
+        });
+        return;
       }
 
-      navigation("/login");
+      toastObserver.notify({
+        message: `Profile updated successfuly`,
+        type: "success",
+        show: true,
+      });
     } catch (error) {
       if (error instanceof Error) {
         setResponseError(error.message);
       } else {
         setResponseError("Something went wrong");
       }
-    } */
+    }
   };
 
   return (

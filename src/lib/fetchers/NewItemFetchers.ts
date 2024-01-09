@@ -6,7 +6,7 @@ const fetchCategories = async (): Promise<TCategory[]> => {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
     });
     const data = await response.json();
@@ -20,7 +20,7 @@ const fetchSubCategories = async (category: TCategory): Promise<TSubCategory[]> 
         method: "GET",
         headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
     });
     const data = await response.json();
@@ -34,7 +34,7 @@ const fetchProducts = async (subCategory: TSubCategory): Promise<TProduct[]> => 
         method: "GET",
         headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
     });
     const data = await response.json();

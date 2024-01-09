@@ -24,7 +24,7 @@ const useAccounts = (options: TUseAccountsOptions) => {
                 const res = await fetch(url, {
                     headers: {
                         "Content-Type": "application/json",
-                        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+                        Authorization: `Bearer ${localStorage.getItem("token")}`,
                     },
                 });
 

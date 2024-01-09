@@ -12,7 +12,7 @@ export default function Header() {
   const navigation = useNavigate();
 
   const handleLogout = () => {
-    sessionStorage.removeItem("token");
+    localStorage.removeItem("token");
     setIsLoggedIn(false);
     navigation("/login");
   };

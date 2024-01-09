@@ -23,7 +23,7 @@ const useAccountItems = (options: TAccountItemsOptions) => {
                 const response = await fetch(`${BASE_API_URL}/Item?${urlSearchParams.toString()}`, {
                     headers: {
                         "Content-Type": "application/json",
-                        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+                        Authorization: `Bearer ${localStorage.getItem("token")}`,
                     },
                 });
                 const itemsData = await response.json();
@@ -32,7 +32,7 @@ const useAccountItems = (options: TAccountItemsOptions) => {
                     const response = await fetch(`${BASE_API_URL}/Product/${item.productId}`, {
                         headers: {
                             "Content-Type": "application/json",
-                            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+                            Authorization: `Bearer ${localStorage.getItem("token")}`,
                         },
                     });
                     const productData = await response.json();

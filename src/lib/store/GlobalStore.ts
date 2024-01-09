@@ -16,7 +16,7 @@ type TGlobalStoreType = {
 }
 
 const useGlobalStore = create<TGlobalStoreType>((set) => ({
-    isLoggedIn: !!sessionStorage.getItem('token'),
+    isLoggedIn: !!localStorage.getItem('token'),
     setIsLoggedIn: (isLoggedIn: boolean) => set({ isLoggedIn }),
 
     user: null,

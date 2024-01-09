@@ -8,7 +8,7 @@ const fetchSeller = async (sellerId: number | null) => {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
     },
   });
   const data = (await response.json()) as TSeller;
@@ -22,7 +22,7 @@ const fetchCreditCard = async (creditCardId: number | null) => {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
     },
   });
   const data = (await response.json()) as TCreditCard;

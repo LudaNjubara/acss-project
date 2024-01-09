@@ -62,7 +62,7 @@ export default function LoginForm() {
       }
 
       const { access_token, user } = await res.json();
-      sessionStorage.setItem("token", access_token);
+      localStorage.setItem("token", access_token);
       setUser(user);
       setIsLoggedIn(true);
 
