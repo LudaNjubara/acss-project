@@ -78,6 +78,7 @@ type TAccountItem = {
   quantity: number;
   productId: number;
   totalPrice: number;
+  pricePerPiece: number;
 };
 
 type TAccountItemsOptions = {

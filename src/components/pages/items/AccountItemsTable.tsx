@@ -13,7 +13,7 @@ const accountItemsTableColumns = [
   { field: "product", nestedField: "productNumber", headerName: "Number", sortable: false },
   { field: "product", nestedField: "color", headerName: "Color", sortable: false },
   { field: "item", nestedField: "quantity", headerName: "Quantity", sortable: false },
-  { field: "product", nestedField: "price", headerName: "Price Per Piece", sortable: false },
+  { field: "item", nestedField: "pricePerPiece", headerName: "Price Per Piece", sortable: false },
   { field: "item", nestedField: "totalPrice", headerName: "Total Price", sortable: false },
   { field: "actions", headerName: "Actions" },
 ];

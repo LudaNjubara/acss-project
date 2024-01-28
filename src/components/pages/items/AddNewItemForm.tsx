@@ -37,6 +37,7 @@ export type TNewItemFormData = {
   subCategory?: TSubCategory;
   product?: TProduct;
   quantity: number;
+  pricePerPiece?: number;
 };
 
 type TAddNewItemFormProps = {
@@ -50,6 +51,7 @@ export default function AddNewItemForm({ setShowNewItemForm, account }: TAddNewI
     subCategory: undefined,
     product: undefined,
     quantity: 1,
+    pricePerPiece: undefined,
   });
 
   const { data, error } = useNewItemForm(formData);
@@ -62,6 +64,7 @@ export default function AddNewItemForm({ setShowNewItemForm, account }: TAddNewI
     const formData = new FormData(e.currentTarget);
     const productId = formData.get("product") as string;
     const quantity = parseInt(formData.get("quantity") as string);
+    const pricePerPiece = Math.fround(Math.random() * 100).toFixed(2);
 
     try {
       const res = await fetch(`${BASE_API_URL}/Item`, {
@@ -74,7 +77,8 @@ export default function AddNewItemForm({ setShowNewItemForm, account }: TAddNewI
           billId: account.bill.id,
           productId: parseInt(productId),
           quantity,
-          totalPrice: (Math.fround(Math.random() * 100) * quantity).toFixed(2),
+          pricePerPiece,
+          totalPrice: (quantity * parseFloat(pricePerPiece)).toFixed(2),
         }),
       });
 
