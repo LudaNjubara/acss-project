@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useAccounts } from "../../../hooks/useAccounts";
-import { TOTAL_ACCOUNTS_PAGES } from "../../../lib/constants/Index";
 import { TCurrentActionState, TUseAccountsOptions } from "../../../typings";
 import TablePagination from "../../common/table/TablePagination";
 import AccountsTable from "./AccountsTable";
@@ -29,11 +28,9 @@ export default function AccountsModal({ currentActionState }: TAccountsModalProp
         <span className="text-lg text-neutral-400">accounts</span>
       </h2>
       <AccountsTable data={data} />
-      <TablePagination
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
-        totalPages={numOfPages || TOTAL_ACCOUNTS_PAGES}
-      />
+      {!!numOfPages && (
+        <TablePagination currentPage={currentPage} setCurrentPage={setCurrentPage} totalPages={numOfPages} />
+      )}
 
       {error && (
         <div className="flex flex-col gap-3">

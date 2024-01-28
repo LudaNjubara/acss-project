@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useAccountItems } from "../../../hooks/useAccountItems";
-import { TOTAL_ACCOUNT_ITEMS_PAGES } from "../../../lib/constants/Index";
 import { TAccount, TAccountItemsOptions } from "../../../typings";
 import TablePagination from "../../common/table/TablePagination";
 import AccountItemsDetails from "../../pages/items/AccountItemsDetails";
@@ -36,11 +35,9 @@ export default function AccountItemsView() {
       />
       {showNewItemForm && <AddNewItemForm setShowNewItemForm={setShowNewItemForm} account={currentAccount} />}
       <AccountItemsTable data={data} />
-      <TablePagination
-        totalPages={numOfPages || TOTAL_ACCOUNT_ITEMS_PAGES}
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
-      />
+      {!!numOfPages && (
+        <TablePagination totalPages={numOfPages} currentPage={currentPage} setCurrentPage={setCurrentPage} />
+      )}
     </div>
   );
 }

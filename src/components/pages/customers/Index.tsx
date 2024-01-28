@@ -1,7 +1,6 @@
 import { useState } from "react";
 
 import { useCustomers } from "../../../hooks/useCustomers";
-import { TOTAL_CUSTOMER_PAGES } from "../../../lib/constants/Index";
 import useGlobalStore from "../../../lib/store/GlobalStore";
 import { TUseCustomersOptions } from "../../../typings";
 import TablePagination from "../../common/table/TablePagination";
@@ -32,11 +31,9 @@ export default function Customers() {
       <CustomersSearch setSearchQuery={setSearchQuery} />
       <CustomersTable data={data} />
 
-      <TablePagination
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
-        totalPages={numOfPages || TOTAL_CUSTOMER_PAGES}
-      />
+      {!!numOfPages && (
+        <TablePagination currentPage={currentPage} setCurrentPage={setCurrentPage} totalPages={numOfPages} />
+      )}
 
       {error && (
         <div className="flex flex-col gap-3">
