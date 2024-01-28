@@ -8,6 +8,7 @@ const useAccountItems = (options: TAccountItemsOptions) => {
     const [data, setData] = useState<TAccountItem[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [error, setError] = useState<string>("");
+    const [numOfPages, setNumOfPages] = useState<number>();
 
     useEffect(() => {
         const fetchAccountItems = async () => {
@@ -26,6 +27,12 @@ const useAccountItems = (options: TAccountItemsOptions) => {
                         Authorization: `Bearer ${localStorage.getItem("token")}`,
                     },
                 });
+
+                if (!response.ok) throw new Error("Something went wrong while fetching the account items");
+
+                const totalCount = response.headers.get("X-Total-Count");
+                setNumOfPages(Math.ceil(Number(totalCount) / (limit || 10)));
+
                 const itemsData = await response.json();
 
                 const productsData = await Promise.all(itemsData.map(async (item: TAccountItem) => {
@@ -59,7 +66,7 @@ const useAccountItems = (options: TAccountItemsOptions) => {
 
     }, [billId, page, limit]);
 
-    return { data, isLoading, error };
+    return { data, numOfPages, isLoading, error };
 };
 
 export { useAccountItems };

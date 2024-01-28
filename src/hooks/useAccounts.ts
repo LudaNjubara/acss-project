@@ -9,6 +9,7 @@ const useAccounts = (options: TUseAccountsOptions) => {
     const [data, setData] = useState<TAccount[]>();
     const [error, setError] = useState<string>();
     const [isLoading, setIsLoading] = useState(true);
+    const [numOfPages, setNumOfPages] = useState<number>();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -29,6 +30,9 @@ const useAccounts = (options: TUseAccountsOptions) => {
                 });
 
                 if (!res.ok) throw new Error('Something went wrong');
+
+                const totalCount = res.headers.get("X-Total-Count");
+                setNumOfPages(Math.ceil(Number(totalCount) / (limit || 10)));
 
                 const billData = await res.json() as TBill[];
 
@@ -60,7 +64,7 @@ const useAccounts = (options: TUseAccountsOptions) => {
         fetchData();
     }, [page, limit, customerId]);
 
-    return { data, error, isLoading };
+    return { data, numOfPages, error, isLoading };
 };
 
 export { useAccounts };

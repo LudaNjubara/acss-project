@@ -20,7 +20,7 @@ export default function AccountsModal({ currentActionState }: TAccountsModalProp
     customerId: customer?.id,
   };
 
-  const { data, error } = useAccounts(accountsOptions);
+  const { data, numOfPages, error } = useAccounts(accountsOptions);
 
   return (
     <div className="flex flex-col gap-10 px-3">
@@ -32,7 +32,7 @@ export default function AccountsModal({ currentActionState }: TAccountsModalProp
       <TablePagination
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
-        totalPages={TOTAL_ACCOUNTS_PAGES}
+        totalPages={numOfPages || TOTAL_ACCOUNTS_PAGES}
       />
 
       {error && (

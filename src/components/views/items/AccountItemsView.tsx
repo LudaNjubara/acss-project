@@ -23,7 +23,7 @@ export default function AccountItemsView() {
     billId: currentAccount.bill.id,
   };
 
-  const { data, error } = useAccountItems(accountItemsOptions);
+  const { data, numOfPages, error } = useAccountItems(accountItemsOptions);
 
   return (
     <div className="flex flex-col gap-8">
@@ -37,7 +37,7 @@ export default function AccountItemsView() {
       {showNewItemForm && <AddNewItemForm setShowNewItemForm={setShowNewItemForm} account={currentAccount} />}
       <AccountItemsTable data={data} />
       <TablePagination
-        totalPages={TOTAL_ACCOUNT_ITEMS_PAGES}
+        totalPages={numOfPages || TOTAL_ACCOUNT_ITEMS_PAGES}
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
       />

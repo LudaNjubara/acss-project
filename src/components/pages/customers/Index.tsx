@@ -25,19 +25,18 @@ export default function Customers() {
     searchQuery,
   };
 
-  const { data, error } = useCustomers(customersOptions);
+  const { data, numOfPages, error } = useCustomers(customersOptions);
 
   return (
     <div className="flex flex-col gap-10 px-3">
       <CustomersSearch setSearchQuery={setSearchQuery} />
       <CustomersTable data={data} />
-      {!searchQuery && (
-        <TablePagination
-          currentPage={currentPage}
-          setCurrentPage={setCurrentPage}
-          totalPages={TOTAL_CUSTOMER_PAGES}
-        />
-      )}
+
+      <TablePagination
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+        totalPages={numOfPages || TOTAL_CUSTOMER_PAGES}
+      />
 
       {error && (
         <div className="flex flex-col gap-3">
